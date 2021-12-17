@@ -1,0 +1,79 @@
+== Step 1: Dead simple game from a JAR
+
+No duelsfootnote:[Duels: when two cards hold same value] yet, just game screen and ending screen. Dead simple, because each player holds just one card.
+
+. game runs via a JAR file
+. 30% unit test coverage - use IntelliJ to measure
+.. the lowes number at classes, methods and lines counts as the final coverage
+. the entire program should be VERY OO, as you will be heavily extending it with each next step/milestone
+. `json` is read, parsed, players are initialized with their cards, players throw their cards, highest card wins, game ends
+. screens: game, end, duel
+
+=== JSON parsing
+
+There's a multi-line text variable called `json` in the class with a `main` method. We will be parsing it, preparing for later, when this will be real JSON file.
+
+.`json` variable value
+----
+[
+[3],
+[2],
+]
+----
+
+First line is player1 cards, 2nd - player2. Here this means that player hands are like that:
+
+----
+p1: 3
+p2: 2
+----
+
+=== Game screen
+
+After counting both players and cards, game begins with its screen.
+
+.Step 1 game screen 
+----
+include::step1_game.screen[]
+----
+
+IMPORTANT: Every screen of the game is SEPARATED from another screen by a SEPARATOR: **precisely** 9 '=' characters followed by exactly **two** blank lines, so altogether 3 lines of text.
+
+Each player plays their card, winner is announced - end screen happens.
+
+=== Card collection order
+
+Here it doesn't yet matter, because player1 always wins, but in real war card game card collection order matters a lot. Just in case you wondered how we do it:
+
+. we first collect cards from lower players (player1 before player2)
+. we append the cards AT THE END of the winner's deck
+
+So, player1's hand after throwdown looks like this: [3,2]. First his own card (his player number is lowest), then the collected card.
+
+=== End screen
+
+End screen is similar to the game screen. No scoring. Simple message is enough: 
+
+.Step 1 end screen 
+----
+include::step1_end.screen[]
+----
+
+WARNING: Location of the SEPARATOR has moved! It's not CLOSING the screen but OPENING it. This means there'll be 2 SEPARATORs in a row.
+
+=== Coin toss instead of dueling
+
+If, by any chance, two players have a card of equal value, toss a coin and determine a winner randomly. For now. We will do duels properly, but later.
+
+.Duel screen
+----
+include::step1_duel.screen[]
+----
+
+Once the player won, we proceed with game screen. So, a sequence of screens here would be:
+
+. game screen with two highest cards being of equal value
+. duel screen, as the one above
+. game screen or end screen, depending on whether there are more cards to play or not
+
+NOTE: You are encouraged to testing this with your own `json`.s.

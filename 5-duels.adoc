@@ -1,0 +1,97 @@
+== Step 5: Duels
+
+. **ALL PREVIOUS REQUIREMENTS MUST WORK**
+. If two or more players play cards with the same value Duel starts.
+. If player runs out of cards his participation in game should end with End of Cards event.
+.. End of Cards event may happen during Battles or Duels.
+
+Clash :: we compare the cards and the highest wins.
+
+Duel :: a special kind of a clash where there is more than one card with the highest value. The case we put off before, here we deal with it.
+
+War consists of battles, which so far consisted of clashes. Now, battles may also have a duel.
+
+Dueling cards have the same value, different colours and owners.
+
+Let's say 4 players began a war. One lost, three remain: player1, player2 and player4. This is the game screen that leads to a dueling screen:
+
+.Game screen has 3 players out of 4 still playing, here 2 have dropped same card. This means a duel.
+----
+include::step5_game.screen[]
+----
+
+Before we get into dueling, please note:
+
+. number of players is higher than currently - one player has already lost the war.
+. the player who lost stops appearing, there's no "player3 player: ..." line, game screen only shows active players.
+
+.Duel screen shows only dueling players. If all three would drop same card, all three would duel.
+----
+include::step5_duel.screen[]
+----
+
+Actually, that duel screen deserves going into details. First, how we reach it:
+
+----
+Player1 played: 7 ? 
+Player4 played: 7 ? 
+Player1 played: 7 ? 9
+Player4 played: 7 ? 11
+Player1 played: 7 ? 9
+Player4 played: 7 ? 11 -----------> WINNER FOUND!
+----
+
+. First we have the game screen which shows all players, including those who played 7.
+. Then we drop into duel screen, with the "We have a duel..." announcement, and we add a hidden card.
+. Third is next revealed card played, ONLY by those who still participate in the duel (still had a card for play in the hand).
+
+That's how events play out, but we show/update the screen only on the revealed clashes, with winner announced. You may say, we only show duel rounds.
+
+IMPORTANT: One more time, only the conclusion of the duel should be displayed, not the whole course of the event.
+
+=== Counting duel rounds 
+
+The game screen counts as 1st duel round. The moment where duel began, the clash that revealed there is more than one highest card. 
+
+Then we show dueling screen with the next round: 
+
+. Each player put down a hidden card, which we show as `?`.
+. Each player put down a revealed card, here 9 and 11.
+. Since 11 > 9 here player4 has won and is announced as winner.
+.. Had there been a duel, we would simply continue outputting duel screens and each would increase the duel rounds counter.
+
+TIP: How many rounds a duel has? Count duel screens, add 1 for first game screen, that's your answer.
+
+=== End of Cards event
+
+EoC event happens when - during war - one cannot put out next hidden or revealed card. This automatically marks that player as a loser and all his cards are forfeit - they will belong to current war's winner.
+
+A special case of this occurs when all warring players cannot put down a card AT THE SAME TIME.
+
+.Duel screen with EoC event. A winner would Player3, as he may have some cards remaining.
+----
+include::step5_eoc_duel.screen[]
+----
+
+What happened?
+
+. At turn 122 war happened when everybody had 8 cards (DRAW, no leader).
+. No game screen happened, first war screen happened instead showing all players playing 9s. First round.
+. 2nd round of war, hidden cards were placed down and no winner was found, 2nd war screen was done, updated.
+. 3rd round of war, hidden cards were placed down, still no winner, 3rd war screen was printed. 10s were played.
+. 4th round of war, `? 13` for all players.
+. 5th round of war, portayed above: hidden cards were placed down and *then everybody ran out of cards*.
+
+Logic of EoC here:
+
+. Player1 ran out of cards first! This player has therefore lost the game. 
+. But others still have cards, we move on to them.
+. Player2 was tallied next, this player lost the game, but one more player has cards.
+. Player3 is the only player with cards, he's the winner.
+. EoC markers were printed for players who had *lower* numbers.
+. Remaining player is marked on screen as a winner *despite him, too, being out of cards*.
+. Next screen is the *ending* screen! This war concluded - also concluding the entire game!
+
+CAUTION: For clarity's sake - if it wouldn't be a draw but there would be a leader with - say 12/24 cards - before this war happened, he would've won earlier, when his opponent's would've ran out of cards. War screens would look similar, but with less rounds and cards and earlier EoC / winner marks. Game would've still proceed to the ending screen.
+
+

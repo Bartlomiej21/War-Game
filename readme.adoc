@@ -1,0 +1,96 @@
+:icons: font
+:authors: Tomasz Borek, Paweł Kierat, Marcin Ogorzałek
+:copyright: Copyrighted by EPAM Systems
+:listing-caption: Listing
+= War card game
+
+IMPORTANT: {copyright}: expressly forbidden to share, distribute, reprint, etc. copy or modify without a written approval of the authors: {authors}. 
+
+Your job is to deliver a working program per these requirements. Minimum allowed version of Java: 11. Anything higher is allowed. **All games need to support scenario files.** Game output is a sequence of screens, screens are in the specification and should be followed to the letter, even when they have mistakes.
+
+CAUTION: Don't change this file, unless expressly told so. File for your remarks, etc. is `remarks.md`, not this readme.
+
+[IMPORTANT]
+.Screen templates
+====
+For your convenience, screen templates are in separate files and are included here. Heck! We even made them per steps, so if you (accidentally or not) change something in the screens, `git` has you covered.
+
+[CAUTION]
+Be aware, GitHub doesn’t know how to treat such includes properly so reading the `adoc` version of this file in a browser isn’t the best idea (you will see link:some.screen). We recommend reading the HTML version OR opening this in IDE with Asciidoctor support (Intellij with a plugin for instance).
+
+
+[CAUTION]
+.Don't install the Aurora framework plug-in in IDE for the `.screen` files. 
+In case you will open the `.screen` files in the IDE, Intellij suggests using a plugin - DON'T. The plugin is for Aurora framework. I certainly didn't had it in mind when crafting the screen files and I know NOT what will happen should you install the plug-in. :-) Again: this just means you should not install the plug-in!
+====
+
+Grading is fairly simple:
+
+. steps 1-3 are absolute minimum to be graded. Everybody who took the course seriously should be able to complete this part in under 2 weeks. 
+. steps 4-6 should be completed if one wants to join Java Academy.
+. anything above is for folks who target a project.
+
+include::1-deadSimpleGame.adoc[]
+
+include::2-cardCollectionOrder.adoc[]
+
+include::3-files.adoc[]
+
+[IMPORTANT]
+.Milestone reached!
+====
+.Source: "kamień milowy", freepik.pl
+image::kamień-milowy-freepik.pl.jpeg[milestone]
+
+NOTE: Completing these steps means you've done an absolute minimum. 
+
+TIP: That's nice, but do go on! If not for Academy or project - for yourself alone.
+
+WARNING: Most likely works which only reach here won't be reviewed. 
+====
+
+include::4-dealing.adoc[]
+
+include::5-duels.adoc[]
+
+include::6-ccc.adoc[]
+
+[IMPORTANT]
+.Milestone reached!
+====
+.Source: "kamień milowy", freepik.pl
+image::kamień-milowy-freepik.pl.jpeg[milestone]
+
+NOTE: Completing all the steps so far makes you eligible for Java Academy ranks. Good job, you!
+
+TIP: Eligible means selectable, not selected. You have gone through qualifying round. That's not the end, yet.
+
+WARNING: For project, that most likely will NOT be enough. Do go on.
+====
+
+== Troubleshooting
+
+This section offers technical (and other) help in case you're stuck with something.
+
+[qanda]
+How to build the jar file?:::
+  `mvn package` from the main dir of this project, same place where this readme is located, *from the command line*.
+I want to use Java 14(15, 16, 17...)! Can I?:::
+  Sure. Bump the version in the `pom.xml`, switch your IDE settings (steps are IDE-dependent - look for yours), run with `java --enable-preview -jar target/War.jar number deckType` if you enabled preview features or without (the `--enable-preview`) if you didn't. We advise you to use Java 17 as it is the newest LTS version and comes with features of the predecessors.
+I accidentally crashed my `.screen` files. How to restore them?:::
+  Use git to do that. Note, that you have screen files per step, choose the right ones.
+How will my work be graded?:::
+  And how far did you get? Absolute minimum is the grading treshold: steps 1-3 must be delivered. Rest is simple. If it doesn't work - it failed, 0 points. Work == meets requirements. We grade: working features first and foremost. Then we grade: tests, Maven, Git, OOP, FP, threads, collections, advanced coding principles / techniques, error handling, generics... if it was taught during course we grade it. If it wasn't, and you introduced it, we grade it (but leniently). Code quality is graded at the end of: works, works well, is tested, is tested well, is documented, is documented well, is coded, is coded well.
+Can I do multiple steps at once?:::
+  **NO**. RESOUNDING NO is the answer. Our experience shows clearly: those who rush, fail. We've seen people trying to tackle too much, too fast. The efforts didn't show their true skill. The results shown only that they got confused in trying to handle too many ideas at the same time, resulting in subpar design. We divided the spec in steps to make things easier for you and to avoid that scenario. Tackle things in steps. Realize how you flow from problem to problem. Failing to obey here while being aware of our wishes means you're VEEEERY confident so we will grade you much harsher. And if in your rush you WON'T DELIVER features (especially the absolute minimum ones) you won't like the result. We want to see your solid work, not rushed and ugly last-minute ditch effort, botched due to haste.
+How will you run my work?:::
+  We will take your code from your repository via `git clone`. We will build it via `mvn package`. We will run it via appropriate `java -jar` command. We will look in your remarks file for details if something goes wrong with or during these steps. We will provide special scenario codes and see the results.
+I want to use Graphical Interface! What now?:::
+  Excellent! First deliver the version as specified here, in absolute minimum (we think that will be complex and challenging on its own). Then `git tag` it and move on to GUI. If GUI causes your code to be sloppy, that's on you.
+
+=== Assumptions, doubts, other remarks
+
+. **READ THE SPEC AGAIN**
+. ask in the chat. There is an entire channel dedicated to Q&A.
+. look in `remarks.md` file in the same directory
+.. it's also an excellent place to leave some instructions for us, if your game requires any

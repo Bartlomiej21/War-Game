@@ -1,0 +1,18 @@
+Usage:
+    java -jar target/War.jar --numPlayers 4 --deckType small
+    java -jar target/War.jar --numPlayers 2 --deckType large
+
+Parameters:
+
+--numPlayers X - sets the number of players to X. X must be between 2-5. Otherwise it will be modified (may be why you are reading this now). 
+--deckType TYPE sets the type of the deck. Small - 24 cards, large - 52 cards, no other options are possible, unless you use scenario files. You can write small, SmALl or SMALL (same with large) - case matters not.
+
+Default values of those parameters are 2 and SMALL.
+
+Why am I seeing this?
+
+1. You didn't give both params, but just one. The other was corrected to it's default value and you're seeing this message. Worry not. Program continues.
+2. You gave bad parameters, which the program corrected to their defaults. Now you're here, reading. Worry not, program proceeds with default values.
+3. Valid integers for players are 2, 3, 4, 5. Anything larger becomes a 5. Anything smaller becomes a 2. If you exceeded that range, you are reading this. Program - obviously - continues despite your attempts. :P
+4. You asked? --help prints this and exits the program, so you can read this in peace. Note, that any scenario files you have gathered will be ignored.
+

@@ -1,0 +1,120 @@
+== Step 2: Card collection order
+
+. **ALL PREVIOUS REQUIREMENTS MUST WORK**
+. cards are now collected in order
+. there may be 3 players
+. there may be 2 or 3 cards per player
+. inifite games are detected and stopped
+. screens: game, end, duel
+
+If we have 2 players: player1 always adds his card and then the card that he won, while player2 adds always player1 card (so a card that he won and then his own).
+Or, in simple words: we always add first player1's card and then player2's.
+
+.a bit of jargon
+[IMPORTANT]
+====
+War :: entire game is a war between players.
+
+Battle :: one round of a game is a battle, when cards get thrown and taken. In the battle, clashes and duels happen.
+
+Clashes :: when we compare the values between cards to determine which one 'beats' the others.
+
+Duels :: a more complicated affair, which we for now, avoid. Let it be said, duels happen when cards have same values and cannot 'beat' the others.
+====
+
+=== example 1: 3 players
+
+If we have 3 players: we first add cards from player1, then from player2, then from player3.
+
+====
+.3 players in `json` variable, each has one card
+----
+[
+[3],
+[4],
+[2],
+]
+----
+
+Gameplay:
+
+.Game screen
+----
+include::step2_3Players_game.screen[]
+----
+
+.End screen
+----
+include::step2_3Players_end.screen[]
+----
+====
+
+=== example 2: 2 players with 2 cards each, too many twos, to confuse you!
+
+Crux here is the card collection ORDER. That is: we always begin from player 1 and work our way up.
+
+====
+.new `json` content for 2 players with 2 cards each
+----
+[
+[3, 4],
+[2, 1],
+]
+----
+
+. first battle ends with decks:
+.. p1: 4,3,2
+.. p2: 1
+. second battle ends with decks:
+.. p1: 3,2,4,1
+.. p2: empty
+====
+
+=== Infinite game!
+
+If we change the shuffle just a little bit, we get an infinite game.
+
+====
+.`json` content - almost the same!
+----
+[
+[2, 4],
+[3, 1],
+]
+----
+
+This game won't end. See for yourself:
+
+. p1: 2 4 4 1 4 2 4 1 4 2 4 1...
+. p2: 3 1 2 3 1 3 2 3 1 3 2 3... 
+====
+
+We have a cycle here, due to how we collect cards. Cards from p1 always are taken first. Cards from p2 - always second. This determines the order and locks us in a perpetuity: 2 will always lose, because it pairs against 3 or 4. 4 will never pair against 3, so this war will never end.
+
+IMPORTANT: For now we count battles. Once we had **10*deckSize battles** we stop the war saying it's probably infinite. So, for deck numbering 4 cards, like above, we would have 40 battles. For the deck like below: 60.
+
+.another inifite war
+====
+.`json` content for 2 players 3 cards each
+----
+[
+[3, 4, 5],
+[2, 8, 1],
+]
+----
+
+Gameplay:
+
+. p1: 3 4 5 3 2 5 1 5 3 5 2 5 1 5 3 5 2 5 1 5 3 5 2 5 1...
+. p2: 2 8 1 4 8 3 4 2 8 1 4 3 8 2 4 1 8 3 4 2 8 1 4 3 8...
+====
+
+That's 25 battles and you probably see the cycle already. Since 8 will never had the chance to clash with 5, both 8 and 5 will just take weaker cards from their owner's opponents. Meaning: no player here will exhaust cards and lose. Inifite war, again. Should stop after 60 battles with an appropriate message, like this:
+
+----
+Stopping the game due to X battles without resolution. Winner is the owner of the highest card AND the owner of the greatest amount of cards: player2.
+----
+
+If we cannot determine the winner (highest card is at player1 but player2 holds lots of cards) we do not announce the winner. We still stop the game!
+
+NOTE: You are encouraged to testing this with your own `json`.s. But we do not speak of draws DELIBERATELY at this step.

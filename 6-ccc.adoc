@@ -1,0 +1,62 @@
+== Step 6: Configuration, customization, cherry on top
+
+We want further configuration and customization of our war card game, with multithreading as a cherry on top.
+
+. **ALL PREVIOUS REQUIREMENTS MUST WORK**
+. Implementation of any requirements below is a feat of strength.
+
+=== Customization
+
+Problem with infinite games (as you may be aware at this point) occurs due to specific way how cards are drawn and added to the players' hand. To solve this, it is necessary to change this pattern.
+
+Use `properties` one file to store those. For use of a given strategy a new and optional, starting parameter `--strategy Z`, where `Z` is name of a given strategy stored in `properties`.
+
+The `default` strategy is the way the game was played up to this point. If `--strategy Z` is omitted or not defined, then this is the one that should be used instead.
+
+Also, there should be a new game screen.
+
+.Game screen with `default` strategy after 30 battles.
+----
+include::step6_game.screen[]
+----
+
+IMPORTANT: Remember about updating *usage*, so strategies are taken into account.
+
+Proposed strategies for the start:
+
+* `default` - REQUIRED - the way the game was played up to this point
+* `shuffle` - reshuffling of the players' hands when infinite game may occur
+* `random` - random card is drawn each time from a player's hand
+
+NOTE: You may add your own strategies of playing, different from proposed one. Remember that `default` is required one.
+
+=== Regionalization
+
+We want to have the game regionalized - we suggest using `properties` files for it but feel free to go your own way.
+
+You will need to regionalize:
+
+. `.screen` files
+. error messages
+. other user interface pieces, if you have any
+
+Rules:
+
+. English is the primary language, the default language
+.. not having English counts as FAILING the task
+. second language is up to you: Polish, French, Italian, Russian, Ukrainian
+.. game should work in both!
+. tests will be run in English (firstly and foremostly)
+. logging should be in english, but messages e.g. from exceptions should be in a given translation.
+
+IMPORTANT: Remember about updating *usage*, so regionalization is taken into account.
+
+TIP: `Properties` and `ResourceBundle` - see related material from the course.
+
+=== Cherry on top
+
+Multithreading was always a hard topic. Especially with the tests. It requires nondeterministic way of thinking.
+
+Here we leave you free hand how to use it. Yet you have to remember about good practices regarding mulit-threading e.g. named threads or timeouts.
+
+TIP: There are old ways to create and handle threads. There are ones introduced in Java 5 along wit _j.u.c_. In the end it is up to you what to use, but we would prefer those from _j.u.c_.

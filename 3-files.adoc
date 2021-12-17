@@ -1,0 +1,95 @@
+== Step 3: JSON and log file handling
+
+. **ALL PREVIOUS REQUIREMENTS MUST WORK**
+. our card game accepts a _JSON_ file instead of a variable
+. program handles bad files - it throws an exception and ends if:
+.. a file does NOT exist or cannot be opened
+.. a file is NOT a real _JSON_ or an invalid _JSON_
+.. a file doesn't have at least 2 players data
+.. a file has MORE than 5 players data
+. important situations in the game should also be logged using an external logging library or `java.util.logging`
+
+In short, no more `String json = ...` variable. That variable is removed (or gets its content from a file instead). A _JSON_ file, `war.json`, is placed in `src/main/resources/`. This file has identical content as variable `json` had so far.
+
+We also want
+
+. a 60% unit test coverage, measured automatically by _JaCoCo_ via Maven plugin,
+.. with appropriate reporting,
+.. the lowes number at classes, methods lines and branches counts as the final coverage.
+. a separation and profiles in tests: integration tests should not be run along with unit tests,
+.. Maven should allow easy launch of just unit tests or just integration tests!
+
+TIP: Groups of tests are also rather obvious here, but they are not MANDATORY. They are, after all, mostly useful to you guys. We encourage you to embrace the features here to help you with testing your code.
+
+WARNING: All `json` variable examples used earlier in the spec must work as a `war.json`.
+
+=== Logging
+
+Allowed libraries: _tinylog_, _log4jv2_, _logback_, _slf4j_ and of course built-in Java library (though we discourage it's use).
+
+Log files should be named `war_yyyy-mm-dd-HH-MM.log` (date- and timestamped, 9PM is 21, 9AM is 9). They should NOT be version-controlled and should appear next to the JAR file.
+
+We log:
+
+. game conditions (player numbers, deck size)
+. all exceptions, problems, worrying situations
+. game resolution (who won, how many turns it took)
+. game technicalities (infinite game, game times, other things of note)
+
+IMPORTANT: For now we only deal with two most severe logging levels. Don't use anything else.
+
+. again: all logging is done to a file
+
+Later on:
+
+. for auditing purposes game should allow log the entire game to a file
+. logging at most verbose level should practically DUPLICATE the outputs from your UI plus offer debug / tracing info. Therefore - do it to a file, not to console.
+. we will expect log levels to be customizable via a config file
+
+NOTE: Test results are NOT logged, unless by use of TestNG API `Logger` and test reports, which are NOT mandatory.
+
+CAUTION: You decide what you log. Use `remarks.md` to explain, if explanation is needed. We decide if your reasoning was sound. Don't ask "what's a game technicality?" in hopes we will tell you more than what's in this file.
+
+=== Multiple input files
+
+WARNING: Programs without this requirement most likely won't be graded at all.
+
+To speed up running multiple testing scenarios, we want any and all `war_something.json` files to be treated as input files. Their presence should be detected in `/src/main/resources/` automatically, without any input from the user.
+
+IMPORTANT: Inform the user how many scenario files the game found and list them, prior to beginning. Make sure exceptions thrown do not disrupt the game but allow the user to fix the problem.
+
+Each file is treated as a separate program input and effectively 'launches' a new war as such.
+
+.Assuming `/src/main/resources/` has following files
+====
+    war_deadSimpleGame.json
+    any
+    validAndLegalJSON.json
+    war_illegalSyntax.json
+    war_infiniteGame.json
+====
+
+We would expect the program to:
+
+. Inform the user that it found 3 scenario files and list them (see below).
+. Ignore files not beginning with `war` and not having the `json` extension, even if they are valid _JSON_ files with input for the game: thus `any` and `validAndLegalJSON.json` should be ignored.
+. Pick remaining files in alphabetical order, so `war_d` is picked prior to `war_i` files.
+. Play the dead simple game scenario, titling it "Dead Simple Game".
+. Throw an exception on illegal JSON syntax in a file that should be picked up but is malformed: `war_illegalSyntax.json`.
+. Play an inifite game, titling it "Infinite Game".
+
+.Listing scenarios:
+----
+include::scenario.screen[]
+----
+
+Scenarios are reported alphabetically, per file name. That is the order of their execution. Each game screen should be titled as the scenario is titled - based on its file name.
+
+.How to title a scenario based on its file name?
+----
+Scenario: Initials Upper Cased Name Goes Here No Extension No Prefix And Spaces Between Words
+----
+
+Title is added prior to each war screen (no matter the screen type).
+
+CAUTION: All scenario files are valid JSON files with `.json` extension. Their name always begins with `war_` prefix.
