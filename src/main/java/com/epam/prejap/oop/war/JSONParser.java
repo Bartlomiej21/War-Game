@@ -1,4 +1,4 @@
-package com.epam.prejap.oop;
+package com.epam.prejap.oop.war;
 
 import org.json.JSONArray;
 
@@ -13,7 +13,8 @@ import java.util.stream.IntStream;
 public class JSONParser {
 
     List cards;
-    int nrOfPlayers;
+    final int nrOfPlayers;  // NR_OF_PLAYERS;
+    int cardNumber = 2;
 
     JSONParser(String json){
         JSONArray ja = new JSONArray(json);
@@ -22,7 +23,8 @@ public class JSONParser {
 
     }
 
-
+// list<card>
+    // list<card> could be it's own type
     private List createPlayersCardsList(JSONArray ja){
 
         List<Integer> playersList = IntStream.rangeClosed(1, ja.length())
