@@ -2,7 +2,6 @@ package com.epam.prejap.oop.war;
 
 import java.util.Iterator;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -27,20 +26,19 @@ public class Players implements Iterable<Player> {
 
     public List<Integer> createPlayersIntList(int nr){
         List<Integer> playersInt = IntStream.rangeClosed(1, nr).boxed().collect(Collectors.toList());
-        System.out.println("PlayersInt: "+playersInt);
         return playersInt;
 
     }
 
-    public void createPlayersList(){
+    public void createPlayersList() {
 
-        //List playersInt = IntStream.rangeClosed(1, numberOfPlayers).boxed().collect(Collectors.toList());
-
-        List<String> playersString = new ConvertIntToStringList( createPlayersIntList(numberOfPlayers) ).stringList;
+        List<String> playersString = new ConvertIntToStringList(createPlayersIntList(numberOfPlayers)).stringList;
         //System.out.println("String of players: " + playersString);
-        for (String s: playersString) players.add(new Player(s));
+        for (String s : playersString) players.add(new Player(s));
 
+    }
 
+    public void iterateThrough(){
         // tryout implementations for iterators
         ListIterator<Player> iter = players.listIterator();
 
@@ -53,15 +51,6 @@ public class Players implements Iterable<Player> {
             iter.next(); // advance the pointer
         }
 
-        /*
-        Iterator<Player> i = iterator();
-
-        while (i.hasNext()) { //if next element exists
-
-            i.forEachRemaining(System.out::println);   // without this infinite loop
-            //i.next(); // advance the pointer
-        }
-        */
 
     }
 
@@ -88,7 +77,5 @@ public class Players implements Iterable<Player> {
     public Iterator<Player> iterator(){
         return players.iterator();
     }
-
-
 
 }

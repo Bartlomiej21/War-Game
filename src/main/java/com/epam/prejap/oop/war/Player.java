@@ -17,7 +17,6 @@ public class Player {
     }
 
     public String getNumber(){
-        System.out.println("Will it work?");
         return "Number" + number;
     }
 }

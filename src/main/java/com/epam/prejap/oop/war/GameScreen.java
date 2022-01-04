@@ -6,7 +6,7 @@ import java.util.LinkedList;
 public class GameScreen {
 
 
-    GameScreen (int nrPlayers, int nrOfCards,List allCards){
+    GameScreen (int nrPlayers, int nrOfCards,List<List<Integer>> allCards){
         StringBuilder sb = new StringBuilder();
         String line = "WAR, "+nrPlayers+" players, ? deck, "+nrOfCards+" cards\n";
         sb.append(line);
