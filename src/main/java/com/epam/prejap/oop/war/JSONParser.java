@@ -10,22 +10,7 @@ import java.util.stream.Collectors;
 
 public class JSONParser {
 
-    //List cards;
-    String oboze;
-
-    JSONParser(String json){
-        JSONArray ja = new JSONArray(json);
-        Players players = new Players(ja.length());
-        PlayersCards cards = new PlayersCards(ja);
-        new RunGame(players,cards.cards);  // new class that will deal with running game. Will be connected to: players, playersCards, Duel,
-
-        // players is a list of players - players = List<Player>;  w ArrayList
-        // każdy Player ma name i number
-
-        // cards to List<List<Card>>   of LinkedList
-        // np. [[3,4,5],[4,12,3,4,5]]
-
-    }
+    String json;
 
     JSONParser() {
         ArrayList<String> result = new ArrayList<>();
@@ -34,18 +19,32 @@ public class JSONParser {
             BufferedReader br = new BufferedReader(new FileReader("war_example.json"));
             while(br.ready()){
                 result.add(br.readLine());
-                this.oboze = br.lines().collect(Collectors.joining());
-                oboze = "["+oboze;   //tak trzeba żyć
-                System.out.println("JSON:"+oboze);
+                this.json = br.lines().collect(Collectors.joining());
+                json = "["+json;
             }
         } catch (IOException e) {
             System.out.println("Nooooooo");
+            //todo for logs
 
         }
 
-        new JSONParser(oboze);
-        //System.out.println(result);  // AL: [[, [9,9,10,10,14,14,11,10],, [9,9,11,11,11,12,13,14],, [14,10,12,12,12,13,13,13], ]]
+        JSONArray ja = new JSONArray(json);
+        Players players = new Players((byte)ja.length());
+        PlayersCards cards = new PlayersCards(ja);
+        new RunGame(players,cards.cards);
 
     }
 
+
+    //todo This will become obsolete after step2
+    JSONParser(String json){
+        JSONArray ja = new JSONArray(json);
+        Players players = new Players((byte)ja.length());
+        PlayersCards cards = new PlayersCards(ja);
+        new RunGame(players,cards.cards);
+
+    }
+
+
 }
+
