@@ -1,57 +1,35 @@
 package com.epam.prejap.oop.war;
 
-import java.util.*;
-import java.util.stream.Collectors;
+
+import java.util.List;
 
 public class Duel {
 
 
-    List<Integer> cardsForWinner = new ArrayList<>();
-    List<Player> duelPlayers;
-    List<List<Card>> cardsInGame;
-    List<Integer>playedCards;
+    Duel(List<Player> allPlayers, List<Player> activePlayers, List<List<Card>> cards,List<Integer> cardsForWinner){
 
+        activePlayers.removeIf(i -> cards.get(i.getNumber()-1).size()<1);
 
+        switch (activePlayers.size()) {
+            case 1:
+                System.out.println("Case 1");
+                Clash.winner = activePlayers.get(0).getNumber();
+                break;
+            case 0:   // in case it ends in a draw todo solve cases when draw and no more cards
+                System.out.println("The game has ended in a draw!!!");
+                System.exit(0);
+                break;
+            default:
+                new Clash(allPlayers,activePlayers,cards,cardsForWinner);
 
-
-    Duel(List<Player> allPlayers,List<Player> activePlayers, List<List<Card>> cards,List<Integer> cardsForWinner){
-        // check if more than 2 cards
-        List<Player> toRemove = new ArrayList<>();
-        List<Card> remainingCards = new LinkedList<>();
-        for (int i=activePlayers.size()-1;i>=0;i--){
-            if (cards.get(i).size()<2){
-                remainingCards.addAll( cards.remove(i));
-                activePlayers.remove(i);
-
-            }
         }
 
-
-        /*
-        for (Player p: activePlayers){
-            if (  cards.get(p.getNumber()-1).size()< 2     ){
-                System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! delete "+p);
-                System.out.println(p.getNumber()-1);
-                toRemove.add(p);
-                //remainingCards.addAll( cards.get(p.getNumber()-1)  );
-                System.out.println("To remove: "+toRemove);
-
-                allPlayers.remove(p);
-
-            }// todo zabierz 1 kartę activePlayers i daj do winner
-        }
-        activePlayers.removeAll(toRemove);
-        //cards.removeAll();
-        */
     }
 
+    byte resolveDrawWithNoCardsLeft(){
 
-
-
-
-
-
-
+        return 0;
+    }
 
 
 }

@@ -1,35 +1,30 @@
 package com.epam.prejap.oop.war;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Clash {
 
-    byte winner;
+    static byte winner;
     List<Integer> playedCards = new ArrayList<>();
-    //List<Integer> cardsForWinner = new ArrayList<>();
-    List<List<Card>> cards;
 
+    Clash(List<Player> allPlayers, List<Player> activePlayers, List<List<Card>> cards, List<Integer> cardsForWinner) {
 
-    Clash(List<Player> activePlayers, List<List<Card>> cards, List<Integer> cardsForWinner) {
-        this.cards = cards;
-
-        ListIterator<Player> iter = activePlayers.listIterator();
-        byte playernr;
-        // add first card to playedCards and simultaneously remove it from playerCards
-        while (iter.hasNext()) {
-            playernr = activePlayers.get(iter.nextIndex()).getNumber(); // 1,2,3
-            //System.out.println("Player nr"+playernr);
-            playedCards.add(cards.get(playernr - 1).remove(0).cardValue);
-            iter.next();
+        byte playerNr;
+        for (Player p: activePlayers ){
+            playerNr = (byte) (p.getNumber()-1);
+            playedCards.add(cards.get(playerNr).remove(0).cardValue);
         }
-        System.out.println("Cards on table: " + playedCards);
-        new GameScreen((byte)activePlayers.size(), PlayersCards.totalNrOfCards, playedCards);
-        winner = selectWinner(activePlayers, playedCards, cardsForWinner);
 
+        System.out.println("Cards on table: " + playedCards);
+        new GameScreen(activePlayers, PlayersCards.totalNrOfCards, playedCards);
+        winner = selectWinner(activePlayers, playedCards, cardsForWinner);
+        if (winner==0) new Duel(allPlayers, activePlayers, cards, cardsForWinner);
     }
 
-
         byte selectWinner(List<Player> activePlayers,List<Integer> playedCards, List<Integer> cardsWinner){
+            System.out.println("Played cards: "+playedCards);
             Integer max = Collections.max(playedCards);
             int occurrences = Collections.frequency(playedCards, max);
             switch (occurrences) {
@@ -48,23 +43,13 @@ public class Clash {
         }
 
 
-    void removeInactiveplayers(List<Player> players, List<Integer> playedCards, Integer max){
-        for (int i=players.size()-1; i>=0; i-- ){
-            if (playedCards.get(i)!=max) players.remove(i);
-        }
-    }
-
-
-    public void showCards(){
-        for (int i=0; i<cards.size();i++) {
-            System.out.println("Cards remaining in player"+(i+1)+" hands: ");
-            for (int j = 0; j < cards.get(i).size(); j++) {
-                System.out.print(cards.get(i).get(j).getCardValue()+" ");
-
+    void removeInactiveplayers(List<Player> activePlayers, List<Integer> playedCards, Integer max){
+        for (int i=activePlayers.size()-1; i>=0; i-- ){
+            if (playedCards.get(i)!=max) {
+                activePlayers.remove(i);
             }
-            System.out.println("");
         }
-
     }
+
 
 }

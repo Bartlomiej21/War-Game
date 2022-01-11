@@ -3,12 +3,13 @@ package com.epam.prejap.oop.war;
 public class Player {
 
     private String name;
-    private String number;
+    private byte number;
+    //private String number;
 
 
-    Player(String playerNumber){
+    Player(byte playerNumber){
         this.number = playerNumber;
-        this.name = "P"+playerNumber;
+        this.name = "Player"+playerNumber;
 
     }
 
@@ -16,7 +17,8 @@ public class Player {
         return "Player"+number;
     }
 
-    public String getNumber(){
-        return "Number" + number;
+    public byte getNumber(){
+        return number;
     }
+
 }

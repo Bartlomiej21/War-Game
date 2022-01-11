@@ -39,7 +39,6 @@ public class PlayersCards {
 
     boolean checkIfNotEmpty(List<List<Card>> cardsToCheck){
         for (List<Card> list: cardsToCheck){
-            System.out.println("Size of hand: "+list.size());
             if (list.isEmpty()) {
                 System.out.println("One of the players does not have any cards!");
                 System.exit(0);

@@ -4,6 +4,7 @@ package com.epam.prejap.oop.war;
 public class Main {
 
     public static void main(String[] args) {
+
         /*
         String json = """
                 [
@@ -11,16 +12,42 @@ public class Main {
                 [2],
                 ]""";
 
-
-         */
+        String json = """
+                [
+                [3],
+                [4],
+                [2],
+                ]""";
 
         String json = """
                 [
-                [11,2,6,7],
-                [5,6,13]
+                [3, 4],
+                [2, 1],
                 ]""";
 
-        /*
+        String json = """
+                [
+                [2, 4],
+                [3, 1],
+                ]""";
+
+
+
+                String json = """
+                [
+                [11,2,6,7],
+                [11,6,13]
+                ]""";
+
+                String json = """
+                [
+                [11,2],
+                [11,2]
+                ]""";
+
+
+
+
         String json = """
                 [
                 [11,2,6,7],
@@ -28,16 +55,19 @@ public class Main {
                 [5,6,13]
                 ]""";
 
-
          */
-        new JSONParser(json);
+
+        String json = """
+                [
+                [11,2],
+                [11,2]
+                ]""";
 
 
-        //JSONParser jparse = new JSONParser(json);
-        //new GameScreen(jparse.NR_OF_PLAYERS, JSONParser.cardNumber,jparse.cards);
+        //new JSONParser(json);        // for STEP 1 AND 2
+        new JSONParser();          // for STEP 3 AND BEYOND
 
-        //p1: 3
-        //p2: 2
+
     }
 
 }

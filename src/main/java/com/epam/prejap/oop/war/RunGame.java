@@ -15,91 +15,52 @@ public class RunGame implements Iterable<Player> {
     RunGame(Players playersList, List cards) {
         this.playersInGame = playersList.players;
         this.cards = cards;
-        System.out.println("Game started");
+        System.out.println("Welcome to the game of WAR!");
         playGame();
-        /*
-        while (playersInGame.size()>1){
-            playGame();
-        }
 
-         */
         System.out.println("End of game");
         System.out.println("The winner is " + playersInGame.get(0).getNumber()+". Congratulations!!!");
-        // end screen
+        // todo end screen
     }
-
 
     void playGame() {
-        int counter = 0;
-        while (playersInGame.size() > 1) {
+        short round = 1;
+
+        while (round<60 && playersInGame.size()>1){
             this.activePlayers = playersInGame.stream().collect(Collectors.toList());
-            while (activePlayers.size() > 1) {
-                showCards();
+                //showCards();    //SHOWS more info about game
                 System.out.println("All players: " + playersInGame);
                 System.out.println("Active players: " + activePlayers);
-                Clash clash = new Clash(activePlayers, cards, cardsForWinner);
-                if (clash.winner > 0) {
-                    System.out.println("Cards for winner"+cardsForWinner);
-                    addCardsToWinner(this.cards, cardsForWinner, clash.winner);
+                Clash clash = new Clash(playersInGame,activePlayers, cards, cardsForWinner);
+                System.out.println("Winner of the round "+round+": "+clash.winner);
 
-                } else {
-                    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!DUEL");
-                    new Duel(playersInGame, activePlayers, cards, cardsForWinner);
-                    for (Player p : activePlayers) {
-                        System.out.println("Active pla"+activePlayers);
-                        System.out.println("players in game"+playersInGame);
-                        showCards();
-                        cardsForWinner.add(cards.get(p.getNumber() - 1).remove(0).cardValue);
-                    }
-                }
+            System.out.println("All players: " + playersInGame);
+            System.out.println("Active players: " + activePlayers);
 
+            addCardsToWinner(this.cards, cardsForWinner, clash.winner);
+            cardQuantityChecker(playersInGame, cards);
+            this.activePlayers = playersInGame.stream().collect(Collectors.toList());
 
-                System.out.println("Zwycięstwo: " + clash.winner);
-
-                cardQuantityChecker(playersInGame, activePlayers, cards);
-                // todo check if any card remains.
-
-                cardsForWinner.clear();
+            cardsForWinner.clear();
+            round++;
             }
-            counter++;
-            System.out.println("Koniec "+counter+" rundy");
 
-            // reszta cards For winner dla gracza jeżeil jeszcze ich nie ma (w przypadku zabraniu kart w Duel)
-            //cardsForWinner.clear();
-
-            // tutaj instrukcje po wybraniu zwycięzcy
-
+            System.out.println("End of round "+round);
+        //todo resolve cases of too many rounds
+        //"Stopping the game due to X battles without resolution. Winner is the owner of the highest card AND the owner of the greatest amount of cards: player2."
         }
 
-    }
 
-    void cardQuantityChecker(List<Player> players, List<Player> activePlayers, List<List<Card>> cards){
-        for (int i=players.size()-1;i>=0;i--){
-            /// usuwa zły element, bo wcześniej ten element jest usunięty przez klasę duel
-            if (cards.get(i).size()<1){
-                cards.remove(i);
-                players.remove(i);
-                activePlayers.remove(i);
-                System.out.println("usuwam: "+i);
-            }
-        }
-
+    void cardQuantityChecker(List<Player> playersInGame, List<List<Card>> cards){
+        playersInGame.removeIf(i -> cards.get(i.getNumber()-1).size() <1);
     }
 
     List addCardsToWinner(List<List<Card>> cards, List<Integer> listOfCards,byte winner){
-        System.out.println("Winner"+winner);
+        System.out.println("Adding cards "+listOfCards+" to player "+winner);
         for(Integer e: listOfCards){
             cards.get(winner-1).add(new Card(e));
-
         }
-        showCards();
         return cards;
-    }
-
-
-
-    void removePlayer(byte playerNumber){
-        playersInGame.remove(playerNumber);
     }
 
 
@@ -112,7 +73,7 @@ public class RunGame implements Iterable<Player> {
             }
             System.out.println("");
         }
-
+        System.out.println("");
     }
 
     @Override

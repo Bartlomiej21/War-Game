@@ -1,2 +1,7 @@
-package com.epam.prejap.oop.war;public interface Screen {
+package com.epam.prejap.oop.war;
+
+ interface Screen {
+
+    void showMessage();
+
 }

@@ -4,7 +4,7 @@ import org.json.JSONArray;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 
@@ -23,7 +23,7 @@ public class JSONParser {
                 json = "["+json;
             }
         } catch (IOException e) {
-            System.out.println("Nooooooo");
+            System.out.println("Input output exception");
             //todo for logs
 
         }
@@ -31,7 +31,8 @@ public class JSONParser {
         JSONArray ja = new JSONArray(json);
         Players players = new Players((byte)ja.length());
         PlayersCards cards = new PlayersCards(ja);
-        new RunGame(players,cards.cards);
+        if (cards.checkIfNotEmpty(cards.cards)) new RunGame(players,cards.cards);
+
 
     }
 
@@ -41,9 +42,10 @@ public class JSONParser {
         JSONArray ja = new JSONArray(json);
         Players players = new Players((byte)ja.length());
         PlayersCards cards = new PlayersCards(ja);
-        new RunGame(players,cards.cards);
+        if (cards.checkIfNotEmpty(cards.cards)) new RunGame(players,cards.cards);
 
     }
+
 
 
 }
