@@ -5,12 +5,11 @@ import org.json.JSONArray;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class PlayersCards {
 
     List cards;
+    static short totalNrOfCards;
 
     PlayersCards(JSONArray ja) {
         this.cards = createPlayerCardsList(ja);
@@ -18,38 +17,38 @@ public class PlayersCards {
 
     private List createPlayerCardsList(JSONArray ja) {
 
-        List<Integer> playersList = new Players().createPlayersIntList(ja.length());
         List<List<Card>> playersCards = new LinkedList<>();
 
-        for (int i : playersList) {
+        for (byte i : Players.playersNames) {
 
             Matcher matcher = Pattern.compile("\\d+").matcher(String.valueOf(ja.get(i - 1)));
             List<Card> childList = new LinkedList<>();
 
             while (matcher.find()) {
                 Card card = new Card(Integer.valueOf(matcher.group()));
-                if (card.correctValue) childList.add(card);
+                if (card.correctValue) {
+                    childList.add(card);
+                    totalNrOfCards++;
+                }
             }
-
             playersCards.add(childList);
-
-
         }
 
-        showCards(playersCards);
         return playersCards;
     }
 
-    void showCards(List<List<Card>> cards) {
-        System.out.println("#################");
-        for (List<Card> l : cards) {
-            for (Card ca : l) {
-                System.out.println("Value of card: " + ca.cardValue);
+    boolean checkIfNotEmpty(List<List<Card>> cardsToCheck){
+        for (List<Card> list: cardsToCheck){
+            System.out.println("Size of hand: "+list.size());
+            if (list.isEmpty()) {
+                System.out.println("One of the players does not have any cards!");
+                System.exit(0);
+                //todo for future logs
+                break;
             }
         }
+        return true;
     }
-
-
 
 
 }

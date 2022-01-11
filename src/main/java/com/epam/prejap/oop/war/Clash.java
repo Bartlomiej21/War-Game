@@ -10,36 +10,37 @@ public class Clash {
     List<List<Card>> cards;
 
 
-    Clash(List<Player> players, List<List<Card>> cards, List<Integer> cardsForWinner) {
+    Clash(List<Player> activePlayers, List<List<Card>> cards, List<Integer> cardsForWinner) {
         this.cards = cards;
 
-        ListIterator<Player> iter = players.listIterator();
+        ListIterator<Player> iter = activePlayers.listIterator();
         byte playernr;
         // add first card to playedCards and simultaneously remove it from playerCards
         while (iter.hasNext()) {
-            playernr = players.get(iter.nextIndex()).getNumber(); // 1,2,3
+            playernr = activePlayers.get(iter.nextIndex()).getNumber(); // 1,2,3
+            //System.out.println("Player nr"+playernr);
             playedCards.add(cards.get(playernr - 1).remove(0).cardValue);
             iter.next();
         }
         System.out.println("Cards on table: " + playedCards);
-        new GameScreen((byte)players.size(), PlayersCards.totalNrOfCards, playedCards);
-        winner = selectWinner(players, playedCards, cardsForWinner);
+        new GameScreen((byte)activePlayers.size(), PlayersCards.totalNrOfCards, playedCards);
+        winner = selectWinner(activePlayers, playedCards, cardsForWinner);
 
     }
 
 
-        byte selectWinner(List<Player> players,List<Integer> playedCards, List<Integer> cardsWinner){
+        byte selectWinner(List<Player> activePlayers,List<Integer> playedCards, List<Integer> cardsWinner){
             Integer max = Collections.max(playedCards);
             int occurrences = Collections.frequency(playedCards, max);
             switch (occurrences) {
                 case 1:
-                    byte winner = players.get(playedCards.indexOf(max)).getNumber();
+                    byte winner = activePlayers.get(playedCards.indexOf(max)).getNumber();
                     cardsWinner.addAll(playedCards);
                     playedCards.clear();
                     return winner;
 
                 default:
-                    removeInactiveplayers(players,playedCards,max);
+                    removeInactiveplayers(activePlayers,playedCards,max);
                     cardsWinner.addAll(playedCards);
                     playedCards.clear();
                     return 0;
@@ -48,7 +49,7 @@ public class Clash {
 
 
     void removeInactiveplayers(List<Player> players, List<Integer> playedCards, Integer max){
-        for (int i=playedCards.size()-1; i>=0; i-- ){
+        for (int i=players.size()-1; i>=0; i-- ){
             if (playedCards.get(i)!=max) players.remove(i);
         }
     }
