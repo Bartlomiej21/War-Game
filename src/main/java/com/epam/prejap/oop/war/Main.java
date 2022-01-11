@@ -1,6 +1,8 @@
 package com.epam.prejap.oop.war;
 
 
+import com.epam.prejap.oop.screen.DuelScreen;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -59,13 +61,16 @@ public class Main {
 
         String json = """
                 [
-                [11,2],
-                [11,2]
+                [11,2,6,7],
+                [2,14,14,8],
+                [5,6,13]
                 ]""";
 
+        //TODO 1.ending screen and message if too many turns.  2.DuelScreen with boolean   3.draw
 
-        //new JSONParser(json);        // for STEP 1 AND 2
-        new JSONParser();          // for STEP 3 AND BEYOND
+        new JSONParser(json);        // for STEP 1 AND 2
+        //new JSONParser();          // for STEP 3 AND BEYOND
+
 
 
     }

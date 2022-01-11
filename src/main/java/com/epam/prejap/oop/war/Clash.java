@@ -1,5 +1,7 @@
 package com.epam.prejap.oop.war;
 
+import com.epam.prejap.oop.screen.GameScreen;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

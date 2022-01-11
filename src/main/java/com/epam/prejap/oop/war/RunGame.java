@@ -1,5 +1,7 @@
 package com.epam.prejap.oop.war;
 
+import com.epam.prejap.oop.screen.EndScreen;
+
 import java.util.*;
 import java.util.Iterator;
 import java.util.stream.Collectors;
@@ -17,18 +19,22 @@ public class RunGame implements Iterable<Player> {
         this.cards = cards;
         System.out.println("Welcome to the game of WAR!");
         playGame();
+        byte winner = playersInGame.get(0).getNumber();
+        short size = (short) this.cards.get(winner-1).size();
+        // this is normal end
+        new EndScreen(winner, size, PlayersCards.totalNrOfCards);
 
-        System.out.println("End of game");
-        System.out.println("The winner is " + playersInGame.get(0).getNumber()+". Congratulations!!!");
-        // todo end screen
+
     }
 
     void playGame() {
         short round = 1;
+        //short gameLimit = (short) (PlayersCards.totalNrOfCards*10);
+        short gameLimit = 30;  // to keep it short for now
 
-        while (round<60 && playersInGame.size()>1){
+        while (playersInGame.size()>1 && round<60){
             this.activePlayers = playersInGame.stream().collect(Collectors.toList());
-                //showCards();    //SHOWS more info about game
+                showCards();    //SHOWS more info about game
                 System.out.println("All players: " + playersInGame);
                 System.out.println("Active players: " + activePlayers);
                 Clash clash = new Clash(playersInGame,activePlayers, cards, cardsForWinner);
@@ -43,11 +49,12 @@ public class RunGame implements Iterable<Player> {
 
             cardsForWinner.clear();
             round++;
+            System.out.println("End of round "+round);
+            if (round==gameLimit) System.out.println(""); //need a function to find a couple of things: max card, max size
+                //new EndScreen(playersInGame,cards);
+
             }
 
-            System.out.println("End of round "+round);
-        //todo resolve cases of too many rounds
-        //"Stopping the game due to X battles without resolution. Winner is the owner of the highest card AND the owner of the greatest amount of cards: player2."
         }
 
 
@@ -60,6 +67,7 @@ public class RunGame implements Iterable<Player> {
         for(Integer e: listOfCards){
             cards.get(winner-1).add(new Card(e));
         }
+
         return cards;
     }
 

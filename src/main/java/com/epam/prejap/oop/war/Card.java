@@ -1,6 +1,6 @@
 package com.epam.prejap.oop.war;
 
-class Card {
+public class Card {
 
     int cardValue;
     boolean correctValue;

@@ -4,8 +4,6 @@ public class Player {
 
     private String name;
     private byte number;
-    //private String number;
-
 
     Player(byte playerNumber){
         this.number = playerNumber;

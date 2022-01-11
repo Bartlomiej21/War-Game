@@ -1,12 +1,14 @@
 package com.epam.prejap.oop.war;
 
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.ListIterator;
 
-class Players  {
+public class Players  {
 
     List<Player> players = new ArrayList<>();
     static List<Byte> playersNames = new ArrayList<>();  // f.ex. [1, 2, 3]
-    static byte numberOfPlayers;
+    public static byte numberOfPlayers;
     final int MIN_PLAYERS = 2;
     final int MAX_PLAYERS = 5;
 
@@ -18,8 +20,6 @@ class Players  {
 
     }
 
-
-
     public void createPlayersList() {
         for (byte i=1; i<=numberOfPlayers;i++) {
             players.add(new Player(i));
@@ -29,18 +29,17 @@ class Players  {
 
     }
 
+    /*
+
     public void iterateThrough(){
-        // tryout implementations for iterators
-
         ListIterator<Player> iter = players.listIterator();
-
         while (iter.hasNext()) {
             players.get(iter.nextIndex()).getNumber();
             iter.next();
         }
 
     }
-
+    */
 
     void checkPlayersNumber(byte number) {
         if (number < MIN_PLAYERS || number > MAX_PLAYERS) {
