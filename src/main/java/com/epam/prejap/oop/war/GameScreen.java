@@ -5,16 +5,19 @@ import java.util.List;
 
 public class GameScreen implements Screen {
 
+    String message;
 
-    GameScreen(byte nrOfPlayers,short nrOfCards, List playedCards){
-
-        String message;
-        message = String.format("WAR, %d players, ? deck, %d cards",nrOfPlayers,nrOfCards);
-        for (Byte b: Players.playersNames){
-            message = message.concat("\nPlayer"+b+" played: "+playedCards.get(b-1));
-
+    GameScreen(List<Player> activePlayers,short nrOfCards, List playedCards){
+        message = String.format("WAR, %d players, ? deck, %d cards",Players.numberOfPlayers,nrOfCards);
+        for (int i=0; i<=activePlayers.size()-1; i++){
+            message = message.concat("\nPlayer"+activePlayers.get(i).getNumber()+" played: "+playedCards.get(i));
         }
+        message = message +"\n==========\n\n";
+        showMessage();
 
+    }
+
+    public void showMessage(){
         System.out.println(message);
     }
 
@@ -25,6 +28,7 @@ public class GameScreen implements Screen {
     Player1 played: 3
     Player2 played: 2
     SEPARATOR
-    */
+
+     */
 
 }
