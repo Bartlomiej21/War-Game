@@ -18,10 +18,11 @@ public class RunGame implements Iterable<Player> {
         this.playersInGame = playersList.players;
         this.cards = cards;
         System.out.println("Welcome to the game of WAR!");
+
+        //new LongGameResolution(playersInGame,cards);   //todo delete after  further testing
         playGame();
         byte winner = playersInGame.get(0).getNumber();
         short size = (short) this.cards.get(winner-1).size();
-        // this is normal end
         new EndScreen(winner, size, PlayersCards.totalNrOfCards);
 
 
@@ -29,19 +30,19 @@ public class RunGame implements Iterable<Player> {
 
     void playGame() {
         short round = 1;
-        //short gameLimit = (short) (PlayersCards.totalNrOfCards*10);
-        short gameLimit = 30;  // to keep it short for now
+        short gameLimit = (short) (PlayersCards.totalNrOfCards*10);   //todo this is final version
+        //short gameLimit = 10;  // to keep it short for now
 
-        while (playersInGame.size()>1 && round<60){
+        while (playersInGame.size()>1 && round<gameLimit){
             this.activePlayers = playersInGame.stream().collect(Collectors.toList());
-                showCards();    //SHOWS more info about game
-                System.out.println("All players: " + playersInGame);
-                System.out.println("Active players: " + activePlayers);
+                //showCards();    //SHOWS player cards
+                //System.out.println("All players: " + playersInGame);
+                //System.out.println("Active players: " + activePlayers);
                 Clash clash = new Clash(playersInGame,activePlayers, cards, cardsForWinner);
-                System.out.println("Winner of the round "+round+": "+clash.winner);
+                //System.out.println("Winner of the round "+round+": "+clash.winner);
 
-            System.out.println("All players: " + playersInGame);
-            System.out.println("Active players: " + activePlayers);
+            //System.out.println("All players: " + playersInGame);
+            //System.out.println("Active players: " + activePlayers);
 
             addCardsToWinner(this.cards, cardsForWinner, clash.winner);
             cardQuantityChecker(playersInGame, cards);
@@ -49,10 +50,11 @@ public class RunGame implements Iterable<Player> {
 
             cardsForWinner.clear();
             round++;
-            System.out.println("End of round "+round);
-            if (round==gameLimit) System.out.println(""); //need a function to find a couple of things: max card, max size
-                //new EndScreen(playersInGame,cards);
-
+            System.out.println("End of round "+round+"\n");
+            if (round==gameLimit) {
+                LongGameResolution lgs = new LongGameResolution(playersInGame, cards);
+                new EndScreen(round, lgs.winner);
+                }
             }
 
         }
@@ -63,7 +65,7 @@ public class RunGame implements Iterable<Player> {
     }
 
     List addCardsToWinner(List<List<Card>> cards, List<Integer> listOfCards,byte winner){
-        System.out.println("Adding cards "+listOfCards+" to player "+winner);
+       // System.out.println("Adding cards "+listOfCards+" to player "+winner);
         for(Integer e: listOfCards){
             cards.get(winner-1).add(new Card(e));
         }

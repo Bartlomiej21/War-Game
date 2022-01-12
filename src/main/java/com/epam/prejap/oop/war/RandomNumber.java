@@ -6,9 +6,9 @@ public class RandomNumber {
 
     Random rand = new Random();
 
-    RandomNumber(byte nr){
+    RandomNumber(byte nrOfPlayersInADuel){
 
-        int n = rand.nextInt();
+        int n = rand.nextInt(nrOfPlayersInADuel);
     }
 
 }

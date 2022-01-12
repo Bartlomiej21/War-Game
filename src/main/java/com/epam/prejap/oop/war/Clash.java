@@ -19,14 +19,14 @@ public class Clash {
             playedCards.add(cards.get(playerNr).remove(0).cardValue);
         }
 
-        System.out.println("Cards on table: " + playedCards);
+        //System.out.println("Cards on table: " + playedCards);
         new GameScreen(activePlayers, PlayersCards.totalNrOfCards, playedCards);
         winner = selectWinner(activePlayers, playedCards, cardsForWinner);
         if (winner==0) new Duel(allPlayers, activePlayers, cards, cardsForWinner);
     }
 
         byte selectWinner(List<Player> activePlayers,List<Integer> playedCards, List<Integer> cardsWinner){
-            System.out.println("Played cards: "+playedCards);
+            //System.out.println("Played cards: "+playedCards);
             Integer max = Collections.max(playedCards);
             int occurrences = Collections.frequency(playedCards, max);
             switch (occurrences) {

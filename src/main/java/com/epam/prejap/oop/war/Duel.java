@@ -1,6 +1,8 @@
 package com.epam.prejap.oop.war;
 
 
+import com.epam.prejap.oop.screen.DuelScreen;
+
 import java.util.List;
 
 public class Duel {
@@ -12,11 +14,11 @@ public class Duel {
 
         switch (activePlayers.size()) {
             case 1:
-                System.out.println("Case 1");
                 Clash.winner = activePlayers.get(0).getNumber();
                 break;
-            case 0:   // in case it ends in a draw todo solve cases when draw and no more cards
-                System.out.println("The game has ended in a draw!!!");
+            case 0:   // in case it ends in a draw and there are no players with any cards left
+                System.out.println("The game has ended in a draw!");
+                new DuelScreen(activePlayers);
                 System.exit(0);
                 break;
             default:
@@ -25,11 +27,5 @@ public class Duel {
         }
 
     }
-
-    byte resolveDrawWithNoCardsLeft(){
-
-        return 0;
-    }
-
 
 }
