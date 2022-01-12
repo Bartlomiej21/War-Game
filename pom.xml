@@ -32,7 +32,7 @@
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>${version.testng}</version>
-            <scope>test</scope>
+            <scope>compile</scope>
         </dependency>
         <!-- #Your dependencies -->
         <dependency>
@@ -105,6 +105,7 @@
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>${version.plugin.maven.resources}</version>
             </plugin>
+
         </plugins>
     </build>
 </project>

@@ -13,17 +13,15 @@ public class RunGame implements Iterable<Player> {
     List<List<Card>> cards;
     List<Integer> cardsForWinner = new ArrayList<>();
 
-
     RunGame(Players playersList, List cards) {
         this.playersInGame = playersList.players;
         this.cards = cards;
         System.out.println("Welcome to the game of WAR!");
 
-        //new LongGameResolution(playersInGame,cards);   //todo delete after  further testing
-        playGame();
-        byte winner = playersInGame.get(0).getNumber();
-        short size = (short) this.cards.get(winner-1).size();
-        new EndScreen(winner, size, PlayersCards.totalNrOfCards);
+        //playGame();
+        //byte winner = playersInGame.get(0).getNumber();
+        //short size = (short) this.cards.get(winner-1).size();
+        //new EndScreen(winner, size, PlayersCards.totalNrOfCards);
 
 
     }
@@ -56,6 +54,9 @@ public class RunGame implements Iterable<Player> {
                 new EndScreen(round, lgs.winner);
                 }
             }
+        byte winner = playersInGame.get(0).getNumber();
+        short size = (short) this.cards.get(winner-1).size();
+        new EndScreen(winner, size, PlayersCards.totalNrOfCards);
 
         }
 
@@ -65,11 +66,9 @@ public class RunGame implements Iterable<Player> {
     }
 
     List addCardsToWinner(List<List<Card>> cards, List<Integer> listOfCards,byte winner){
-       // System.out.println("Adding cards "+listOfCards+" to player "+winner);
         for(Integer e: listOfCards){
             cards.get(winner-1).add(new Card(e));
         }
-
         return cards;
     }
 

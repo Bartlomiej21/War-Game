@@ -25,6 +25,7 @@ public class JSONParser {
                 result.add(br.readLine());
                 this.json = br.lines().collect(Collectors.joining());
                 json = "["+json;
+
             }
         }  catch (FileNotFoundException e)  {
             System.out.println("File not found!");
@@ -43,7 +44,10 @@ public class JSONParser {
         JSONArray ja = new JSONArray(json);
         Players players = new Players((byte)ja.length());
         PlayersCards cards = new PlayersCards(ja);
-        if (cards.checkIfNotEmpty(cards.cards)) new RunGame(players,cards.cards);
+        if (cards.checkIfNotEmpty(cards.cards)) {
+            RunGame runGame = new RunGame(players,cards.cards);
+            runGame.playGame();
+        }
 
     }
 
@@ -53,7 +57,10 @@ public class JSONParser {
         JSONArray ja = new JSONArray(json);
         Players players = new Players((byte)ja.length());
         PlayersCards cards = new PlayersCards(ja);
-        if (cards.checkIfNotEmpty(cards.cards)) new RunGame(players,cards.cards);
+        if (cards.checkIfNotEmpty(cards.cards)) {
+            RunGame runGame = new RunGame(players,cards.cards);
+            runGame.playGame();
+        }
 
     }
 

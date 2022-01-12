@@ -29,17 +29,6 @@ public class Players  {
 
     }
 
-    /*
-
-    public void iterateThrough(){
-        ListIterator<Player> iter = players.listIterator();
-        while (iter.hasNext()) {
-            players.get(iter.nextIndex()).getNumber();
-            iter.next();
-        }
-
-    }
-    */
 
     void checkPlayersNumber(byte number) {
         if (number < MIN_PLAYERS || number > MAX_PLAYERS) {
