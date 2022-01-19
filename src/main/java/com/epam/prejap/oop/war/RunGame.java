@@ -16,6 +16,7 @@ public class RunGame implements Iterable<Player> {
     RunGame(Players playersList, List cards) {
         this.playersInGame = playersList.players;
         this.cards = cards;
+        new Printer();
         System.out.println("Welcome to the game of WAR!");
 
         //playGame();
@@ -51,11 +52,13 @@ public class RunGame implements Iterable<Player> {
             System.out.println("End of round "+round+"\n");
             if (round==gameLimit) {
                 LongGameResolution lgs = new LongGameResolution(playersInGame, cards);
+                new Printer(lgs.winner,round);
                 new EndScreen(round, lgs.winner);
                 }
             }
         byte winner = playersInGame.get(0).getNumber();
         short size = (short) this.cards.get(winner-1).size();
+        new Printer(winner,round);
         new EndScreen(winner, size, PlayersCards.totalNrOfCards);
 
         }

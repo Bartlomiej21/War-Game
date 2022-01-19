@@ -17,5 +17,15 @@ class Printer {
         logger.error("Exception occurred: "+e);
     }
 
+    Printer (){
+        logger.debug("Number of players: %d, Size of deck: %d",Players.numberOfPlayers,PlayersCards.totalNrOfCards);
+    }
+
+    Printer (byte winnerNr, short roundsCount){
+        logger.debug("Player %d won the game! It took %d rounds.",winnerNr,roundsCount);
+    }
+
+
+
 
 }
