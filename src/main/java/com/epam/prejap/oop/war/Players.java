@@ -32,16 +32,9 @@ public class Players  {
 
     void checkPlayersNumber(byte number) {
         if (number < MIN_PLAYERS || number > MAX_PLAYERS) {
-            System.out.println("Bad player count ");
-            try
-            {
-                Thread.sleep(4000);
-            }
-            catch(InterruptedException e)
-            {
-                System.exit(-1);
-                //todo log errors
-            }
+            new Printer("incorrect number of players.");
+            System.exit(0);
+
         }
     }
 

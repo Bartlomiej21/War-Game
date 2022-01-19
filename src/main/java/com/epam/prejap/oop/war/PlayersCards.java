@@ -41,9 +41,9 @@ public class PlayersCards {
     boolean checkIfNotEmpty(List<List<Card>> cardsToCheck){
         for (List<Card> list: cardsToCheck){
             if (list.isEmpty()) {
-                System.out.println("One of the players does not have any cards!");
+                //System.out.println("One of the players does not have any cards!");
+                new Printer("one or more players did not have any cards!");
                 System.exit(0);
-                //todo for future logs
                 break;
             }
         }

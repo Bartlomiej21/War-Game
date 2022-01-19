@@ -29,16 +29,20 @@ public class JSONParser {
             }
         }  catch (FileNotFoundException e)  {
             System.out.println("File not found!");
+            new Printer(e);
+            System.exit(0);
         }
             catch (IOException e) {
-            System.out.println("Input output exception");
-            //todo for logs
+            new Printer(e);
+            System.exit(0);
 
         }
 
         try {
             new JSONArray(json);
             } catch (JSONException e){
+            new Printer(e);
+            System.exit(0);
         }
 
         JSONArray ja = new JSONArray(json);
@@ -48,6 +52,7 @@ public class JSONParser {
             RunGame runGame = new RunGame(players,cards.cards);
             runGame.playGame();
         }
+
 
     }
 
