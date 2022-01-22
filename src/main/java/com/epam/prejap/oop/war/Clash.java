@@ -2,56 +2,76 @@ package com.epam.prejap.oop.war;
 
 import com.epam.prejap.oop.screen.GameScreen;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 public class Clash {
 
-    static byte winner;
-    List<Integer> playedCards = new ArrayList<>();
+    byte winner;    //todo winner type Player;
+    //Player winner1 = new Player((byte) 0);
+    Cards playedCards = new Cards();
 
-    Clash(List<Player> allPlayers, List<Player> activePlayers, List<List<Card>> cards, List<Integer> cardsForWinner) {
 
+    byte resolveClash(List<Player> allPlayers, List<Player> activePlayers, List<List<Card>> cards, Cards cardsForWinner){
         byte playerNr;
         for (Player p: activePlayers ){
             playerNr = (byte) (p.getNumber()-1);
-            playedCards.add(cards.get(playerNr).remove(0).cardValue);
+            int removedCard = cards.get(playerNr).remove(0).getCardValue();
+            playedCards.getCards().add(new Card(removedCard));
         }
 
         //System.out.println("Cards on table: " + playedCards);
         new GameScreen(activePlayers, PlayersCards.totalNrOfCards, playedCards);
         winner = selectWinner(activePlayers, playedCards, cardsForWinner);
-        if (winner==0) new Duel(allPlayers, activePlayers, cards, cardsForWinner);
+        while (winner==0) {
+            //winner = new Duel(allPlayers, activePlayers, cards, cardsForWinner);
+            winner = new Duel().resolveDuel(allPlayers, activePlayers, cards, cardsForWinner);
+        }
+        return winner;
     }
 
-        byte selectWinner(List<Player> activePlayers,List<Integer> playedCards, List<Integer> cardsWinner){
-            //System.out.println("Played cards: "+playedCards);
-            Integer max = Collections.max(playedCards);
-            int occurrences = Collections.frequency(playedCards, max);
+        byte selectWinner(List<Player> activePlayers,Cards playedCards, Cards cardsWinner) {
+            int max = 0;
+            short occurrences = 1;
+            int index = 0;
+            int indexOfWinner = 0;
+            Iterator<Card> itr = playedCards.iterator();
+            while (itr.hasNext()) {
+                int maxTemp = itr.next().getCardValue();
+                if (maxTemp > max) {
+                    max = maxTemp;
+                    occurrences = 1;
+                    indexOfWinner = index;
+                } else if (maxTemp == max) {
+                    occurrences++;
+                }
+                index++;
+            }
+
             switch (occurrences) {
                 case 1:
-                    byte winner = activePlayers.get(playedCards.indexOf(max)).getNumber();
-                    cardsWinner.addAll(playedCards);
-                    playedCards.clear();
+                    byte winner = activePlayers.get(indexOfWinner).getNumber();
+                    cardsWinner.getCards().addAll(playedCards.getCards());
+                    playedCards.getCards().clear();
                     return winner;
 
                 default:
                     removeInactiveplayers(activePlayers,playedCards,max);
-                    cardsWinner.addAll(playedCards);
-                    playedCards.clear();
+                    cardsWinner.getCards().addAll(playedCards.getCards());
+                    playedCards.getCards().clear();
                     return 0;
             }
         }
 
-
-    void removeInactiveplayers(List<Player> activePlayers, List<Integer> playedCards, Integer max){
+    void removeInactiveplayers(List<Player> activePlayers, Cards playedCards, Integer max){
         for (int i=activePlayers.size()-1; i>=0; i-- ){
-            if (playedCards.get(i)!=max) {
+            if (playedCards.getCards().get(i).cardValue!=max) {
                 activePlayers.remove(i);
             }
         }
     }
 
-
+    public void setWinner(byte number) {
+        this.winner = number;
+    }
 }
