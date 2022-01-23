@@ -7,9 +7,10 @@ public class Duel {
 
     byte winner;
 
-    byte resolveDuel(List<Player> allPlayers, List<Player> activePlayers, List<Cards> cards,Cards cardsForWinner){
+    byte resolveDuel(Players allPlayers, List<Player> activePlayers, Cards cardsForWinner){
 
-        activePlayers.removeIf(i -> cards.get(i.getNumber()-1).getCards().size()<1);  // HERE
+        //activePlayers.removeIf(i -> cards.get(i.getNumber()-1).getCards().size()<1);  // HERE
+        activePlayers.removeIf(i ->  i.getPlayersCards().getCards().size()<1);  // HERE
 
         switch (activePlayers.size()) {
             case 1:
@@ -21,7 +22,7 @@ public class Duel {
                 //System.exit(0);  //todo this is a situation without end
                 break;
             default:
-                winner = new Clash((short)5).resolveClash(allPlayers,activePlayers,cards,cardsForWinner);  //todo constructor!
+                winner = new Clash((short)5).resolveClash(allPlayers,activePlayers,cardsForWinner);  //todo constructor!
         }
         return winner;
     }

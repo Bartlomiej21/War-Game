@@ -8,18 +8,17 @@ import java.util.stream.Collectors;
 
 public class RunGame implements Iterable<Player> {
 
-    List<Player> playersInGame;
+    Players playersInGame;
     List<Player> activePlayers ;
-    List<Cards> cards;
     Cards cardsForWinner = new Cards();
     short totalNrOfCards;
     byte nrOfPlayers;
 
-    RunGame(Players playersList, List cards, short totalNrOfCards) {
-        this.playersInGame = playersList.players;
-        this.cards = cards;
-        this.totalNrOfCards = totalNrOfCards;
-        this.nrOfPlayers = (byte) playersInGame.size();
+    RunGame(Players playersList) {
+        this.playersInGame = playersList;
+        //this.cards = cards;  //this was from a constructor
+        this.totalNrOfCards = 18;
+        this.nrOfPlayers = (byte) playersInGame.getPlayers().size();
         new Printer(nrOfPlayers,totalNrOfCards,(byte)0,(byte)0);
         System.out.println("Welcome to the game of WAR!");
     }
@@ -29,47 +28,77 @@ public class RunGame implements Iterable<Player> {
         short gameLimit = (short) (totalNrOfCards*10);   //todo this is final version
         //short gameLimit = 10;  // for short tests
 
-        while (playersInGame.size()>1 && round<gameLimit){
-            this.activePlayers = playersInGame.stream().collect(Collectors.toList());
-            showCards();    //SHOWS player cards
-            byte winner = new Clash(totalNrOfCards).resolveClash(playersInGame,activePlayers, cards, cardsForWinner);
+        while (playersInGame.getPlayers().size()>1 && round<gameLimit){
+            this.activePlayers = playersInGame.getPlayers().stream().collect(Collectors.toList());
+            //this.activePlayers = new Players();
+            //activePlayers.getPlayers().addAll(playersInGame.getPlayers().stream().collect(Collectors.toList()));  // this is not a copy
 
-            addCardsToWinner(this.cards, cardsForWinner, winner);  //HERE
-            cardQuantityChecker(playersInGame, cards);              //HERE
-            this.activePlayers = playersInGame.stream().collect(Collectors.toList());
+
+            /*
+            this.activePlayers = new Players();
+            for (Player p: playersInGame.getPlayers()) {
+                activePlayers.getPlayers().add(p);
+            }
+
+             */
+
+
+
+            showCards();    //SHOWS player cards
+            byte winner = new Clash(totalNrOfCards).resolveClash(playersInGame,activePlayers, cardsForWinner);  //todo poprawić short w konstruktorze
+
+            System.out.println("winner: "+winner);
+            System.out.println(cardsForWinner.getCards().size());
+            addCardsToWinner(playersInGame, cardsForWinner, winner);  //HERE
+            cardQuantityChecker(playersInGame);              //HERE
+
+            /*
+            this.activePlayers = new Players();
+            for (Player p: playersInGame.getPlayers()) {
+                activePlayers.getPlayers().add(p);
+            }
+            */
+
+
+            this.activePlayers = playersInGame.getPlayers().stream().collect(Collectors.toList());
+
 
             cardsForWinner.getCards().clear();
             round++;
             System.out.println("End of round "+round+"\n");
             if (round==gameLimit) {
-                LongGameResolution lgs = new LongGameResolution(playersInGame, cards);  //here
+                LongGameResolution lgs = new LongGameResolution(playersInGame);  //here
                 new Printer(nrOfPlayers,totalNrOfCards,lgs.winner,round);
                 new EndScreen(round, lgs.winner);
                 }
             }
-        byte winner = playersInGame.get(0).getNumber();
-        short size = (short) this.cards.get(winner-1).getCards().size();
+        byte winner = playersInGame.getPlayers().get(0).getNumber();
+        //short size = (short) this.cards.get(winner-1).getCards().size();
+        short size = 18;
         new Printer(winner,round);
         new EndScreen(winner, size, totalNrOfCards);
     }
 
-    void cardQuantityChecker(List<Player> playersInGame, List<Cards> cards){
-        playersInGame.removeIf(i -> cards.get(i.getNumber()-1).getCards().size() <1);
+    void cardQuantityChecker(Players playersInGame){
+        playersInGame.getPlayers().removeIf(i -> i.getPlayersCards().getCards().size()<1);
     }
 
-    List addCardsToWinner(List<Cards> cards, Cards listOfCards,byte winner){
-        for(Card c: listOfCards){
-            cards.get(winner-1).getCards().add(c);
-        }
-        return cards;
+    void addCardsToWinner(Players players, Cards listOfCards,byte winner){
+       for(Player p: players) {
+           if (p.getNumber()==winner) {
+               for (Card c : listOfCards) {
+                   p.getPlayersCards().getCards().add(c);
+               }
+           }
+       }
     }
 
 
     public void showCards(){
-        for (int i=0; i<cards.size();i++) {
-            System.out.println("Cards remaining in player"+(i+1)+" hands: ");
-            for (int j = 0; j < cards.get(i).getCards().size(); j++) {          //here
-                System.out.print(cards.get(i).getCards().get(j).getCardValue()+" ");  //here
+        for (Player p: playersInGame) {
+            System.out.println("Cards remaining in player"+(p.getNumber())+" hands: ");
+            for (Card c: p.getPlayersCards().getCards()) {
+                System.out.print(c.cardValue+" ");
 
             }
             System.out.println("");

@@ -4,8 +4,8 @@ public class Card {
 
     int cardValue;
     boolean correctValue;
-    final byte LOWER_RANGE = 1;    // json strings contain 1's but according to card rules it should be 2. Left as is for now
-    final byte UPPER_RANGE = 14;   // I assume Ace will count as the highest card, hence 14 is max
+    final byte LOWER_RANGE = 1;
+    final byte UPPER_RANGE = 14;
 
     Card(int cardValue){
         this.cardValue = cardValue;
@@ -17,6 +17,8 @@ public class Card {
     public int getCardValue(){
         return cardValue;
     }
+
+    public void setCardValue(int i){cardValue=i;}  //for tests
 
 
 }

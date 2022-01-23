@@ -17,11 +17,10 @@ public class Clash {
     }
 
 
-    byte resolveClash(List<Player> allPlayers, List<Player> activePlayers, List<Cards> cards, Cards cardsForWinner){
-        byte playerNr;
+    byte resolveClash(Players allPlayers, List<Player> activePlayers, Cards cardsForWinner){
+
         for (Player p: activePlayers ){
-            playerNr = (byte) (p.getNumber()-1);
-            int removedCard = cards.get(playerNr).getCards().remove(0).getCardValue();   //HERE
+            int removedCard = p.getPlayersCards().getCards().remove(0).getCardValue();
             playedCards.getCards().add(new Card(removedCard));
         }
 
@@ -30,12 +29,12 @@ public class Clash {
         winner = selectWinner(activePlayers, playedCards, cardsForWinner);
         while (winner==0) {
             //winner = new Duel(allPlayers, activePlayers, cards, cardsForWinner);
-            winner = new Duel().resolveDuel(allPlayers, activePlayers, cards, cardsForWinner);
+            winner = new Duel().resolveDuel(allPlayers, activePlayers, cardsForWinner);
         }
         return winner;
     }
 
-        byte selectWinner(List<Player> activePlayers,Cards playedCards, Cards cardsWinner) {
+        byte selectWinner(List<Player> activePlayers, Cards playedCards, Cards cardsWinner) {
             int max = 0;
             short occurrences = 1;
             int index = 0;

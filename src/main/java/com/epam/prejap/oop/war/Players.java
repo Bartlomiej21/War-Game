@@ -1,11 +1,50 @@
 package com.epam.prejap.oop.war;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Spliterator;
+import java.util.function.Consumer;
 
-public class Players  {  //todo access modifier levels
+public class Players implements Iterable<Player> {  //todo access modifier levels
 
-    List<Player> players = new ArrayList<>();
+    private List<Player> players;
+
+    Players(List<Player> players) {
+        this.players = players;
+    }
+
+    Players() { this(new ArrayList<>()); }
+
+    @Override
+    public Iterator<Player> iterator() {
+        return players.iterator();
+    }
+
+    @Override
+    public void forEach(Consumer<? super Player> action) {
+        players.forEach(action);
+    }
+
+    @Override
+    public Spliterator<Player> spliterator() {
+        return players.spliterator();
+    }
+
+    public List<Player> getPlayers(){
+        return players;
+    }
+
+
+
+
+    /*
+
+
+
+
+
+    public List<Player> players = new ArrayList<>();
     static List<Byte> playersNames = new ArrayList<>();  // f.ex. [1, 2, 3]
     public static byte numberOfPlayers;    //todo try to get rid of static
     final int MIN_PLAYERS = 2;
@@ -17,6 +56,10 @@ public class Players  {  //todo access modifier levels
         this.numberOfPlayers = numberOfPlayers;
         createPlayersList();
 
+    }
+
+    Players(List<Player> players){
+        this.players = players;
     }
 
     public void createPlayersList() {     //not actually creating a list todo
@@ -34,4 +77,8 @@ public class Players  {  //todo access modifier levels
             new Printer("incorrect number of players.");
         }
     }
+
+
+
+     */
 }

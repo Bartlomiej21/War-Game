@@ -7,24 +7,25 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PlayersCards {
+public class DeckCreator {
 
-
+    // TESTING if really obsolete   //todo delete after some further refactoring
+    /*
     List<Cards> cards;
     //static short totalNrOfCards;
     short totalNrOfCards;
 
-    PlayersCards(JSONArray ja) {
+    DeckCreator(JSONArray ja) {
         this.cards = createPlayerCardsList(ja);
     }
 
-    private List createPlayerCardsList(JSONArray ja) {  //not depend on JSONa todo
+    private List createPlayerCardsList(JSONArray ja) {
 
         List<Cards> playersCards = new LinkedList<>();
 
-        for (byte i : Players.playersNames) {
+        for (int i=0; i<ja.length();i++) {
 
-            Matcher matcher = Pattern.compile("\\d+").matcher(String.valueOf(ja.get(i - 1)));
+            Matcher matcher = Pattern.compile("\\d+").matcher(String.valueOf(ja.get(i)));
             Cards childList = new Cards();
 
             while (matcher.find()) {
@@ -39,6 +40,8 @@ public class PlayersCards {
         return playersCards;
     }
 
+
+
     boolean checkIfNotEmpty(List<Cards> cardsToCheck){
         for (Cards list: cardsToCheck){
             if (list.getCards().isEmpty()) {
@@ -51,6 +54,8 @@ public class PlayersCards {
         return true;
     }
 
+
+     */
 
 }
 
@@ -65,7 +70,7 @@ public class PlayersCards {
         this.cards = createPlayerCardsList(ja);
     }
 
-    private List createPlayerCardsList(JSONArray ja) {  //not depend on JSONa todo
+    private List createPlayerCardsList(JSONArray ja) {
 
         List<List<Card>> playersCards = new LinkedList<>();
 
