@@ -6,13 +6,11 @@ public class LongGameResolution {
 
     byte winner;
 
-    LongGameResolution(List<Player> players, List<List<Card>> cards){
-
+    LongGameResolution(List<Player> players, List<Cards> cards){
         this.winner = findWinner(cards,players);
-
     }
 
-    byte findWinner(List<List<Card>> cards, List<Player> players) {
+    byte findWinner(List<Cards> cards, List<Player> players) {
         List<Byte> winnerCondition1 = new ArrayList<>();
         List<Byte> winnerCondition2 = new ArrayList<>();
         List<List<Integer>> cardsValues = new ArrayList<>();
@@ -22,8 +20,8 @@ public class LongGameResolution {
         for (Player p : players) {
             List<Integer> childList = new ArrayList<>();
             int playerIndex = p.getNumber()-1;
-            for (int i = 0; i < cards.get(playerIndex).size(); i++) {
-                childList.add(cards.get(playerIndex).get(i).cardValue);
+            for (int i = 0; i < cards.get(playerIndex).getCards().size(); i++) {    //ch
+                childList.add(cards.get(playerIndex).getCards().get(i).cardValue);  //ch
             }
 
             cardsValues.add(childList);
@@ -35,7 +33,7 @@ public class LongGameResolution {
                    max = maxTemp;
                } else if (maxTemp.equals(max)) winnerCondition2.add((byte) (playerIndex+1));
 
-               short sizeTemp = (short) cards.get(playerIndex).size();
+               short sizeTemp = (short) cards.get(playerIndex).getCards().size();  // ch
 
                 if (sizeTemp>size){
                     winnerCondition1.clear();

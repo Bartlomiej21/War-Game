@@ -14,7 +14,7 @@ public class Card {
 
     boolean checkValueRange(int value) {return (value>=LOWER_RANGE && value <=UPPER_RANGE); }
 
-    int getCardValue(){
+    public int getCardValue(){
         return cardValue;
     }
 

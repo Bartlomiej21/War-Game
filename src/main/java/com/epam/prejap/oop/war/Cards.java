@@ -1,7 +1,10 @@
 package com.epam.prejap.oop.war;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.function.Consumer;
+import java.util.*; //todo change
 
 
 public class Cards implements Iterable<Card> {
@@ -12,9 +15,8 @@ public class Cards implements Iterable<Card> {
         this.cards = cards;
     }
 
-    Cards() {
-        this(new ArrayList<>());
-    }
+    Cards() { this(new ArrayList<>()); }
+    //Cards() { this(new LinkedList<>()); }
 
     @Override
     public Iterator<Card> iterator() {

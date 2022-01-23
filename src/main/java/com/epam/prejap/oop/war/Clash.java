@@ -10,18 +10,23 @@ public class Clash {
     byte winner;    //todo winner type Player;
     //Player winner1 = new Player((byte) 0);
     Cards playedCards = new Cards();
+    short totalNrOfCards;
+
+    Clash(short nrOfCards){
+        this.totalNrOfCards = nrOfCards;
+    }
 
 
-    byte resolveClash(List<Player> allPlayers, List<Player> activePlayers, List<List<Card>> cards, Cards cardsForWinner){
+    byte resolveClash(List<Player> allPlayers, List<Player> activePlayers, List<Cards> cards, Cards cardsForWinner){
         byte playerNr;
         for (Player p: activePlayers ){
             playerNr = (byte) (p.getNumber()-1);
-            int removedCard = cards.get(playerNr).remove(0).getCardValue();
+            int removedCard = cards.get(playerNr).getCards().remove(0).getCardValue();   //HERE
             playedCards.getCards().add(new Card(removedCard));
         }
 
         //System.out.println("Cards on table: " + playedCards);
-        new GameScreen(activePlayers, PlayersCards.totalNrOfCards, playedCards);
+        new GameScreen(activePlayers, totalNrOfCards, playedCards);
         winner = selectWinner(activePlayers, playedCards, cardsForWinner);
         while (winner==0) {
             //winner = new Duel(allPlayers, activePlayers, cards, cardsForWinner);
@@ -73,5 +78,5 @@ public class Clash {
 
     public void setWinner(byte number) {
         this.winner = number;
-    }
+    }   //todo check if obsolete now
 }

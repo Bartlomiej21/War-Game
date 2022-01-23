@@ -9,14 +9,63 @@ import java.util.regex.Pattern;
 
 public class PlayersCards {
 
-    List cards;
+
+    List<Cards> cards;
+    //static short totalNrOfCards;
+    short totalNrOfCards;
+
+    PlayersCards(JSONArray ja) {
+        this.cards = createPlayerCardsList(ja);
+    }
+
+    private List createPlayerCardsList(JSONArray ja) {  //not depend on JSONa todo
+
+        List<Cards> playersCards = new LinkedList<>();
+
+        for (byte i : Players.playersNames) {
+
+            Matcher matcher = Pattern.compile("\\d+").matcher(String.valueOf(ja.get(i - 1)));
+            Cards childList = new Cards();
+
+            while (matcher.find()) {
+                Card card = new Card(Integer.parseInt(matcher.group()));
+                if (card.correctValue) {
+                    childList.getCards().add(card);
+                    totalNrOfCards++;
+                }
+            }
+            playersCards.add(childList);
+        }
+        return playersCards;
+    }
+
+    boolean checkIfNotEmpty(List<Cards> cardsToCheck){
+        for (Cards list: cardsToCheck){
+            if (list.getCards().isEmpty()) {
+                //System.out.println("One of the players does not have any cards!");
+                new Printer("one or more players did not have any cards!");
+                System.exit(0);
+                break;
+            }
+        }
+        return true;
+    }
+
+
+}
+
+/*
+public class PlayersCards {
+
+    //List<List<Card>> cards;  //List<Hand>
+    List<Cards> cards;
     static short totalNrOfCards;
 
     PlayersCards(JSONArray ja) {
         this.cards = createPlayerCardsList(ja);
     }
 
-    private List createPlayerCardsList(JSONArray ja) {
+    private List createPlayerCardsList(JSONArray ja) {  //not depend on JSONa todo
 
         List<List<Card>> playersCards = new LinkedList<>();
 
@@ -26,7 +75,7 @@ public class PlayersCards {
             List<Card> childList = new LinkedList<>();
 
             while (matcher.find()) {
-                Card card = new Card(Integer.valueOf(matcher.group()));
+                Card card = new Card(Integer.parseInt(matcher.group()));
                 if (card.correctValue) {
                     childList.add(card);
                     totalNrOfCards++;
@@ -52,3 +101,6 @@ public class PlayersCards {
 
 
 }
+
+
+ */

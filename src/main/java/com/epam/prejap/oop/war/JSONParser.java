@@ -21,7 +21,7 @@ public class JSONParser {
             Players players = new Players((byte)ja.length());
             PlayersCards cards = new PlayersCards(ja);
             if (cards.checkIfNotEmpty(cards.cards)) {
-                RunGame runGame = new RunGame(players, cards.cards);
+                RunGame runGame = new RunGame(players, cards.cards,cards.totalNrOfCards); //todo
                 runGame.playGame();
             }
         }
@@ -48,7 +48,7 @@ public class JSONParser {
         return null;
     }
 
-    boolean checkJSONArray(String json) {  //todo check if null is OK - it os ok,checked
+    boolean checkJSONArray(String json) {
         try {
             new JSONArray(json);
         }
