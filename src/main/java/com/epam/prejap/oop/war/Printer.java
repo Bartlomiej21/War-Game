@@ -59,7 +59,7 @@ class Printer {
     
     void printMsgAfterGame(){
         logger.debug("Player %d won the game! It took %d rounds.",winnerNr,roundsCount);
-    }
+    }  //todo switch in case no player won (winner = 0)
 
 
 }

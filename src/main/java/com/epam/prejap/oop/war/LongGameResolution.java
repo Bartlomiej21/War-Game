@@ -19,7 +19,8 @@ public class LongGameResolution {
 
         for (Player p : players) {
             List<Integer> childList = new ArrayList<>();
-            int playerIndex = p.getNumber()-1;
+            int playerIndex = p.getNumber();
+            //System.out.println("!!!!!!!"+playerIndex);   // 0 and 2
             for (int i = 0; i < p.getPlayersCards().getCards().size(); i++) {    //ch
                 childList.add(p.getPlayersCards().getCards().get(i).cardValue);  //ch
             }
@@ -29,19 +30,21 @@ public class LongGameResolution {
             Integer maxTemp = Collections.max(childList);
                if (maxTemp > max) {
                    winnerCondition2.clear();
-                   winnerCondition2.add((byte) (playerIndex+1));
+                   winnerCondition2.add((byte) (playerIndex));
                    max = maxTemp;
-               } else if (maxTemp.equals(max)) winnerCondition2.add((byte) (playerIndex+1));
+               } else if (maxTemp.equals(max)) winnerCondition2.add((byte) (playerIndex));
 
                short sizeTemp = (short) p.getPlayersCards().getCards().size();  // ch
 
                 if (sizeTemp>size){
                     winnerCondition1.clear();
-                    winnerCondition1.add((byte) (playerIndex+1));
+                    winnerCondition1.add((byte) (playerIndex));
                     size=sizeTemp;
-                } else if (sizeTemp == size) winnerCondition1.add((byte) (playerIndex+1));
+                } else if (sizeTemp == size) winnerCondition1.add((byte) (playerIndex));
 
             }
+        //System.out.println(winnerCondition1.toString());
+        //System.out.println(winnerCondition2.toString());
 
         winnerCondition1.retainAll(winnerCondition2);
         //System.out.println("Remaining cards: "+cardsValues);

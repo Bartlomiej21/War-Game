@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * This class loads possible scenarios from this directory: "src/main/resources/". Valid scenarios must begin with war_ prefix and have .json extension.
- * List of scenarios is sorted in alphabetical order.
+ * List of scenarios is sorted in alphabetical order. If there are no scenario files detected, default scenario will trigger.
  */
 public class ScenarioManager {
     List<String> scenarioPaths;
@@ -22,7 +22,17 @@ public class ScenarioManager {
     void prepareScenariosForTheGame(){
         this.scenarioPaths = createListOfScenarios();
         this.scenarioList = prepareScenarioName(scenarioPaths);
-        new ScenarioScreen(scenarioPaths);
+        if (scenarioPaths.size()>0 ){    //scenarioPaths.size()>0     scenarioPaths.size()==2
+            new ScenarioScreen(scenarioPaths);
+            for (String path: scenarioPaths){
+                int index = scenarioPaths.indexOf(path);
+                System.out.println("Scenario: "+scenarioList.get(index)+"\n\n");
+                new JSONParser(false).prepareGame(path);
+            }
+        } else {
+            System.out.println("Scenario: Default Scenario\n\n");
+            new JSONParser(true).prepareGame("src/main/resources/war.json");  //default scenario
+        }
     }
 
     public List createListOfScenarios() {

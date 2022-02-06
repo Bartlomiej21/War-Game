@@ -22,7 +22,7 @@ public class RunGame  {
         //short gameLimit = (short) (totalNrOfCards*10);
         short gameLimit = 50;  // for short tests
         while (playersInGame.getPlayers().size()>1 && round<gameLimit){
-            //showCards();    //SHOWS player cards
+            showCards();    //SHOWS player cards
             Clash clash = new Clash(playersInGame,totalNrOfCards);
             clash.playedCards=clash.createListOfPlayedCards(clash.activePlayers);
             clash.printGameScreen(clash.activePlayers, totalNrOfCards,clash.playedCards);

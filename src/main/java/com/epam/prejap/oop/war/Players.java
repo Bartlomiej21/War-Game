@@ -62,7 +62,7 @@ public class Players implements Iterable<Player> {  //todo access modifier level
         this.players = players;
     }
 
-    public void createPlayersList() {     //not actually creating a list todo
+    public void createPlayersList() {
         for (byte i=1; i<=numberOfPlayers;i++) {
             players.add(new Player(i));
             playersNames.add(i);
@@ -72,7 +72,7 @@ public class Players implements Iterable<Player> {  //todo access modifier level
     //get numberofPlayers
 
 
-    void checkPlayersNumber(byte number) {     //todo should be bool
+    void checkPlayersNumber(byte number) {     //todo should be bool. Also this is not currently implemented
         if (number < MIN_PLAYERS || number > MAX_PLAYERS) {
             new Printer("incorrect number of players.");
         }

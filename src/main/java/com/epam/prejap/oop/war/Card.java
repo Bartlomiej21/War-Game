@@ -20,5 +20,4 @@ public class Card {
 
     public void setCardValue(int i){cardValue=i;}  //for tests
 
-
 }
