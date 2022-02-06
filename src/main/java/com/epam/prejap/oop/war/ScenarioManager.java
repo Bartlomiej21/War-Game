@@ -1,57 +1,72 @@
 package com.epam.prejap.oop.war;
 
-import java.util.*;
+import com.epam.prejap.oop.screen.ScenarioScreen;
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Iterator;
 import java.util.regex.*;
+import java.util.ArrayList;
+import java.util.List;
 
-
+/**
+ * This class loads possible scenarios from this directory: "src/main/resources/". Valid scenarios must begin with war_ prefix and have .json extension.
+ * List of scenarios is sorted in alphabetical order.
+ */
 public class ScenarioManager {
+    List<String> scenarioPaths;
+    List<String> scenarioList;
 
-    public static void main(String args[]) {
-        List<String> fileNames = new ArrayList<>();
-        fileNames.add("war_deadSimpleGame.json");
-        fileNames.add("any");
-        fileNames.add("validAndLegalJSON.json");
-        fileNames.add("war_illegalSyntax.json");
-        fileNames.add("war_infiniteGame.json");
-        System.out.println(fileNames);
+    void prepareScenariosForTheGame(){
+        this.scenarioPaths = createListOfScenarios();
+        this.scenarioList = prepareScenarioName(scenarioPaths);
+        new ScenarioScreen(scenarioPaths);
+    }
 
-    Pattern p = Pattern.compile("war.*\\.json");
+    public List createListOfScenarios() {
+        Path path = Paths.get("src/main/resources/");
+        DirectoryStream ds;
+        ArrayList<String> list = new ArrayList<>();
+        {
+            try {
+                ds = Files.newDirectoryStream(path);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+        ds.forEach(i -> list.add(i.toString()));
+        filterResourcesForValidScenarios(list);
+        java.util.Collections.sort(list); //sorting list in alphabetical order.
+        return list;
+    }
 
-    Iterator<String> iter = fileNames.iterator();
-     while (iter.hasNext()) {
-        String str = iter.next();
-        Matcher m = p.matcher(str);
-        if (!m.matches()){
-            iter.remove();
+    void filterResourcesForValidScenarios(List fileNames){
+        Pattern p = Pattern.compile("src\\\\main\\\\resources\\\\war_.*\\.json");
+        Iterator<String> iter = fileNames.iterator();
+        while (iter.hasNext()) {
+            String str = iter.next();
+            Matcher m = p.matcher(str);
+            if (!m.matches()){
+                iter.remove();
+            }
+        }
+        this.scenarioPaths = new ArrayList<>();
+        for (Object s: fileNames){
+            scenarioPaths.add(s.toString());
         }
     }
 
-            System.out.println(fileNames);
-
-    fileNames = prepareName(fileNames);
-            System.out.println(fileNames);
-
-
-
-    // Scenario: DeadSimpleGame
-    // Scenario: InfiniteGame
-
-}
-
-
-    static List<String> prepareName(List<String> list){
+    static List<String> prepareScenarioName(List<String> list){
         List<String> result = new ArrayList<>();
         for (String s: list){
             String[] sarr = s.split("_");
             sarr[1] = sarr[1].replace(".json","");
             sarr[1] = sarr[1].substring(0,1).toUpperCase() + sarr[1].substring(1);
             result.add(sarr[1]);
-
-            //String cap = str.substring(0, 1).toUpperCase() + str.substring(1);
-
-
         }
         return result;
     }
-
 }
