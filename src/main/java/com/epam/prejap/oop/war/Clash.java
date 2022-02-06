@@ -6,7 +6,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+/**
+ * This class deals with comparing user cards, a.k.a. clashing. It's supposed to select a winner who will get cards for a given round.
+ */
 public class Clash {
 
     List<Player> activePlayers;
@@ -39,7 +41,6 @@ public class Clash {
 
         winner = selectWinner(activePlayers, playedCards, cardsForWinner);
         if (!duelOccurred) {
-            // this is a case when there is NO DUEL
             cardsForWinner.getCards().addAll(playedCards.getCards());
             playedCards.getCards().clear();
             return winner;
@@ -51,19 +52,12 @@ public class Clash {
         }
         //todo below should be moved to duel class
         while (winner==-1) {
-            //check if any card remaining. Kill player if not.
             activePlayers.removeIf(i -> i.getPlayersCards().getCards().size()<1);  //todo this should get Eoc event
-            //take one card.
             this.playedCards = createListOfPlayedCards(activePlayers);  //this removes from playerCards and adds to playedCards
-            //Don't compare. Add ? sign
             duel.addToDuelMessage(activePlayers,playedCards, " ?");
-            //Add to playersDuelList; Don't compare
             duel.moveCardsFromPlayedCardsToPlayerDuelCards(activePlayers,playedCards);
-            ///check in any card remaining. Kill again if yes.
             activePlayers.removeIf(i -> i.getPlayersCards().getCards().size()<1);
-            //take cards
             this.playedCards = createListOfPlayedCards(activePlayers);
-            // compare
             winner = selectWinner(activePlayers, playedCards, cardsForWinner);
         }
         // todo in case of duel, below gives cards to a winner. Should be in a different place
@@ -101,7 +95,6 @@ public class Clash {
 
                 default:
                     this.max = max;   //todo this needs to disappear in later versions
-                    //System.out.println("!!!!!!!!!!!!!!!!DUEL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                     duelOccurred = true;
                     return -1;
             }

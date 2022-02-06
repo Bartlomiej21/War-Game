@@ -1,7 +1,8 @@
 package com.epam.prejap.oop.war;
 
-import java.util.List;
-
+/**
+ * This class is a representation of a player playing a game of War.
+ */
 public class Player {
 
     private String name;
@@ -15,7 +16,6 @@ public class Player {
         this.number = playerNumber;
         this.name = "Player"+playerNumber;
         this.playersCards = playersCards;
-        //this.duelCards = new Cards();
     }
 
     public String toString(){

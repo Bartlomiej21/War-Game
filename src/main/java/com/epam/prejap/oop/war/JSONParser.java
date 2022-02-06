@@ -1,5 +1,6 @@
 package com.epam.prejap.oop.war;
 
+import com.epam.prejap.oop.screen.DealingScreen;
 import org.json.JSONArray;
 import org.json.JSONException;
 import java.io.FileNotFoundException;
@@ -45,6 +46,9 @@ public class JSONParser {
         Cards playerCards;
         Cards allCards = new Cards();
 
+        for (int i=0; i<ja.length();i++){
+            playersList.getPlayers().add(new Player((byte) (i+1),new Cards()));
+        }
         switch (shuffleDeck ? 1 : 0){
             case 1:
                 matcher = Pattern.compile("\\d+").matcher(String.valueOf(ja));
@@ -56,18 +60,13 @@ public class JSONParser {
                     }
                 }
                 Collections.shuffle(allCards.getCards());
-                //todo move to before switch after checking
-                for (int i=0; i<ja.length();i++){
-                    playersList.getPlayers().add(new Player((byte) (i+1),new Cards()));
-                }
-                int player = 0;
+                int playerNr = 0;
                 for (Card card: allCards.getCards()){
-                    playersList.getPlayers().get(player).getPlayersCards().getCards().add(card);
-                    player++;
-                    if(player==ja.length()) player=0;
+                    playersList.getPlayers().get(playerNr).getPlayersCards().getCards().add(card);
+                    playerNr++;
+                    if(playerNr==ja.length()) playerNr=0;
                 }
-                //System.out.println(playersList.getPlayers().get(2).getPlayersCards().getCards().get(5).cardValue);
-                //playerCards = new Cards();
+                new DealingScreen(playersList,totalNrOfCards).showMessage();
                 return playersList;
             case 0:
                 for (int i=0; i<ja.length();i++) {
@@ -80,7 +79,7 @@ public class JSONParser {
                             totalNrOfCards++;
                         }
                     }
-                    playersList.getPlayers().add(new Player((byte)(i+1),playerCards));
+                    playersList.getPlayers().get(i).getPlayersCards().getCards().addAll(playerCards.getCards());
                 }
                 return playersList;
         }

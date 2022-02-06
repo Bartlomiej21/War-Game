@@ -1,5 +1,8 @@
 package com.epam.prejap.oop.war;
 
+/**
+ * This class is a representation of a single playing card.
+ */
 public class Card {
 
     int cardValue;

@@ -3,9 +3,10 @@ package com.epam.prejap.oop.war;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * This class logs error to the file. Each file is formatted such that it's name contain the moment of logging.
+ */
 class Printer {
-
-
     private static Logger logger = LogManager.getFormatterLogger(Printer.class);
 
     String error;

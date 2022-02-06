@@ -6,13 +6,11 @@ import java.util.List;
 import java.util.Random;
 
 public class DuelScreen implements Screen {
-
     String message;
 
     public DuelScreen(List<Player> players){
         getMessage(players);
         showMessage();
-
     }
 
     public void showMessage(){
@@ -35,9 +33,16 @@ public class DuelScreen implements Screen {
 
 }
 
-
 /*
-     Duel between players will be decided by a coin toss.
-        Tossing... player1 has won!
-        SEPARATOR
-*/
+WAR, 3 players, SMALL deck, turn #122 - DRAW with 8/24 cards
+================================================================
+                 WE HAVE A WAR LADIES AND GENTLEMEN!
+================================================================
+Player1 played: 9 ? 12 ? 10 ? 13 ? EoC
+Player2 played: 9 ? 12 ? 10 ? 13 ? EoC
+Player3 played: 9 ? 12 ? 10 ? 13 ? -----------> WINNER FOUND!
+
+War lasted 5 rounds.
+SEPARATOR
+
+ */

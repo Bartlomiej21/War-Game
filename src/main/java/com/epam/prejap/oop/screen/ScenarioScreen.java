@@ -17,7 +17,6 @@ public class ScenarioScreen implements Screen {
     public void getMessage(List<String> fileNames){
         message = "Found "+fileNames.size()+" scenario files:";
         for (String s: fileNames){
-            //System.out.println(f.getAbsolutePath().substring(f.getAbsolutePath().lastIndexOf("\\")+1));
             message = message+"\n"+s.substring(s.lastIndexOf("\\")+1);
         }
         message = message+"\n\nExecuting in given order."+separator;

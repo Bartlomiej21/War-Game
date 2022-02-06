@@ -2,8 +2,10 @@ package com.epam.prejap.oop.war;
 
 import com.epam.prejap.oop.screen.EndScreen;
 
+/**
+ * This class runs loops of the game. It's supposed to end game either as a draw, clear winner or forced winner conclusion.
+ */
 public class RunGame  {
-
     Players playersInGame;
     short totalNrOfCards;
     byte nrOfPlayers;
@@ -19,8 +21,8 @@ public class RunGame  {
         new Printer(nrOfPlayers,totalNrOfCards,(byte)0,(byte)0).printMsgBeforeGame();
         Cards cardsForWinner = new Cards();
         short round = 0;
-        //short gameLimit = (short) (totalNrOfCards*10);
-        short gameLimit = 50;  // for short tests
+        short gameLimit = (short) (totalNrOfCards*10);
+        //short gameLimit = 10;  // for short tests
         while (playersInGame.getPlayers().size()>1 && round<gameLimit){
             showCards();    //SHOWS player cards
             Clash clash = new Clash(playersInGame,totalNrOfCards);
@@ -35,7 +37,6 @@ public class RunGame  {
             round++;
             System.out.println("End of round "+round+"\n");
             }
-        // todo 3 endings: normal, infinite, draw. Still need to be tested
         boolean gameFinishedEarly = (gameLimit==round);
         String ending = chooseEnding(gameFinishedEarly);
 
