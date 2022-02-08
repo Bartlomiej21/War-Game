@@ -16,8 +16,6 @@ public class Clash {
     byte winner;
     short totalNrOfCards;   //todo could be unnecessary
     Duel duel;
-    boolean duelOccurred = false;
-    int max;
 
     Clash(Players playersInGame, short totalNrOfCards){
         this.activePlayers = playersInGame.getPlayers().stream().collect(Collectors.toList());
@@ -40,33 +38,53 @@ public class Clash {
     byte resolveClash(Players allPlayers, List<Player> activePlayers, Cards cardsForWinner){
 
         winner = selectWinner(activePlayers, playedCards, cardsForWinner);
-        if (!duelOccurred) {
+        if (duel==null) {
             cardsForWinner.getCards().addAll(playedCards.getCards());
             playedCards.getCards().clear();
             return winner;
-        } else {
-            this.duel = new Duel(activePlayers);
-            cardsForWinner.getCards().addAll(takeCardsFromInactivePlayersAndRemoveThem(activePlayers,playedCards,max)); //does not print anything
-            duel.createDuelMessage(activePlayers, playedCards);
-            duel.moveCardsFromPlayedCardsToPlayerDuelCards(activePlayers, playedCards);
         }
         //todo below should be moved to duel class
         while (winner==-1) {
-            activePlayers.removeIf(i -> i.getPlayersCards().getCards().size()<1);  //todo this should get Eoc event
-            this.playedCards = createListOfPlayedCards(activePlayers);  //this removes from playerCards and adds to playedCards
-            duel.addToDuelMessage(activePlayers,playedCards, " ?");
-            duel.moveCardsFromPlayedCardsToPlayerDuelCards(activePlayers,playedCards);
-            activePlayers.removeIf(i -> i.getPlayersCards().getCards().size()<1);
-            this.playedCards = createListOfPlayedCards(activePlayers);
-            winner = selectWinner(activePlayers, playedCards, cardsForWinner);
+            duel.duelPlayers.removeIf(i -> i.getPlayersCards().getCards().size()<1);  //todo this should get Eoc event
+            this.playedCards = createListOfPlayedCards(duel.duelPlayers);  //this removes from playerCards and adds to playedCards
+            duel.addToDuelMessage(duel.duelPlayers, " ?");
+            duel.moveCardsFromPlayedCardsToPlayerDuelCards(duel.duelPlayers,playedCards);  //hidden card to playerDuelCards
+            duel.duelPlayers.removeIf(i -> i.getPlayersCards().getCards().size()<1);  //also a EoC events
+            if (duel.duelPlayers.size()>1){
+                this.playedCards = createListOfPlayedCards(duel.duelPlayers);
+                winner = selectWinner(duel.duelPlayers, playedCards, cardsForWinner);
+            } else if (duel.duelPlayers.size()==1){
+                duel.duelPlayers.get(0).setDuelMessage("Winner");
+                winner = duel.duelPlayers.get(0).getNumber();
+            } else {
+                // winner is the last player
+                winner = duel.defaultWinner;
+            }
         }
         // todo in case of duel, below gives cards to a winner. Should be in a different place
+        /*
         for (Player p: duel.duelPlayers){
             System.out.println(p.getDuelMessage());
             cardsForWinner.getCards().addAll(p.getDuelCards().getCards());
             p.getDuelCards().getCards().clear();
         }
-        cardsForWinner.getCards().addAll(playedCards.getCards());
+
+         */
+        cardsForWinner.getCards().clear();
+        for (int i=0; i<=playedCards.getCards().size()-1;i++){
+            duel.duelPlayers.get(i).getDuelCards().getCards().add(playedCards.getCards().get(i));
+        }
+
+        for (Player p: activePlayers){
+            cardsForWinner.getCards().addAll(p.getDuelCards().getCards());
+        }
+
+
+        for (Player p: activePlayers){
+            p.getDuelCards().getCards().clear();
+            p.setDuelMessage(null);
+        }
+        //cardsForWinner.getCards().addAll(playedCards.getCards());
         return winner;
     }
 
@@ -94,22 +112,13 @@ public class Clash {
                     return winner;
 
                 default:
-                    this.max = max;   //todo this needs to disappear in later versions
-                    duelOccurred = true;
+                    this.duel = new Duel();
+                    duel.duelPlayers = duel.createDuelPlayersList(activePlayers,playedCards,max);
+                    //duel.createDuelMessage(playedCards);
+                    System.out.println("dueeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeel");
                     return -1;
             }
         }
-
-    List<Card> takeCardsFromInactivePlayersAndRemoveThem(List<Player> activePlayers, Cards playedCards, Integer max){
-        List<Card> cardsToTake = new ArrayList<>();
-        for (int i=activePlayers.size()-1; i>=0; i-- ){
-            if (playedCards.getCards().get(i).cardValue!=max) {
-                activePlayers.remove(i);
-                cardsToTake.add(playedCards.getCards().remove(i));
-            }
-        }
-        return cardsToTake;
-    }
 
     void addCardsToWinner(Players players, Cards listOfCards,byte winner){
         // todo check if there is no draw. Actually I might not need to do that - below will not work for winner=0
