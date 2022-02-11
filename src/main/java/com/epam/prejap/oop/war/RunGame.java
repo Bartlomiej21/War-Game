@@ -25,46 +25,28 @@ public class RunGame  {
         //short gameLimit = 10;  // for short tests
         while (playersInGame.getPlayers().size()>1 && round<gameLimit){
             showCards();    //SHOWS player cards
-            Clash clash = new Clash(playersInGame,totalNrOfCards);
-            clash.playedCards=clash.createListOfPlayedCards(clash.activePlayers);
+            Clash clash = new Clash(playersInGame,totalNrOfCards,round);  //todo add stuff
+            clash.playedCards= Clash.createListOfPlayedCards(clash.activePlayers);
             clash.printGameScreen(clash.activePlayers, totalNrOfCards,clash.playedCards);
-            clash.resolveClash(playersInGame,clash.activePlayers, cardsForWinner);
+            clash.resolveClash(clash.activePlayers, cardsForWinner);
 
-            clash.addCardsToWinner(playersInGame, cardsForWinner, clash.winner);  //todo there could be no winner (a draw)
+            clash.addCardsToWinner(playersInGame, cardsForWinner, clash.winner);  //todo there is always a winner, even a default one
             playersInGame.getPlayers().removeIf(i -> i.getPlayersCards().getCards().size()<1);
-            //this.activePlayers = playersInGame.getPlayers().stream().collect(Collectors.toList());  //todo test work if null, also this could be obsolete
             cardsForWinner.getCards().clear();
             round++;
             System.out.println("End of round "+round+"\n");
             }
         boolean gameFinishedEarly = (gameLimit==round);
-        String ending = chooseEnding(gameFinishedEarly);
-
-        switch (ending) {
-            case "infinite":
-                LongGameResolution lgs = new LongGameResolution(playersInGame);
-                new Printer(nrOfPlayers,totalNrOfCards,lgs.winner,round);
-                new EndScreen(round, lgs.winner);
-                break;
-            case "draw":
-                System.out.println("Sadly, this was a draw :/");
-                break;
-            default:
-                byte winner = playersInGame.getPlayers().get(0).getNumber();
-                //short size = (short) playersInGame.getPlayers().get(0).getPlayersCards().size();
-                short size = 18;
-                new Printer(winner, round);
-                new EndScreen(winner, size, totalNrOfCards);
-        }
-    }
-
-    String chooseEnding(boolean gameFinishedEarly){
-        if (playersInGame.getPlayers().size()==0){
-            return "draw";
-        } else if(gameFinishedEarly) {
-            return "infinite";
+        if (gameFinishedEarly){
+            LongGameResolution lgs = new LongGameResolution(playersInGame);
+            new Printer(nrOfPlayers,totalNrOfCards,lgs.winner,round);
+            new EndScreen(round, lgs.winner);
         } else {
-            return  "normal";
+            byte winner = playersInGame.getPlayers().get(0).getNumber();
+            short size = (short) playersInGame.getPlayers().get(0).getPlayersCards().getCards().size();
+            //short size = 18;
+            new Printer(winner, round);
+            new EndScreen(winner, size, totalNrOfCards);
         }
     }
 
