@@ -1,6 +1,7 @@
 package com.epam.prejap.oop.war;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,66 +9,84 @@ import java.util.stream.Collectors;
  * This class deals with situation in a game when Clash ends up in a draw.
  */
 public class Duel {
-    byte winner;
-    //Cards duelCards;
+
     List<Player> duelPlayers;
+    Cards duelCards;
     byte defaultWinner;
 
     Duel(){
         //this.duelPlayers = createDuelPlayersList();
     }
 
-    Duel(List<Player> activePlayers){
-        //this.duelCards = new Cards();
-        this.duelPlayers = activePlayers.stream().collect(Collectors.toList());
-    }
-
     List<Player> createDuelPlayersList(List<Player> activePlayers, Cards playedCards, int max) {
         List<Player> duelList = new ArrayList();
         for (int i = 0; i <= activePlayers.size() - 1; i++) {
-            activePlayers.get(i).getDuelCards().getCards().add(new Card(playedCards.getCards().get(i).cardValue)); //this helps with the card order
+            Player player = activePlayers.get(i);
+            int cardValue = playedCards.getCards().get(i).cardValue;
+            player.getDuelCards().getCards().add(new Card(cardValue));
+            if (player.getDuelMessage() == null){
+                player.setDuelMessage("Player"+player.getNumber()+" played: "+cardValue);
+            }
             if (playedCards.getCards().get(i).cardValue == max) {
                 duelList.add(activePlayers.get(i));
-                String msg = "Player"+activePlayers.get(i).getNumber()+" played: "+playedCards.getCards().get(i).cardValue;
-                activePlayers.get(i).setDuelMessage(msg);
-                System.out.println(activePlayers.get(i).getDuelMessage());
             }
         }
         this.defaultWinner = duelList.get(duelList.size()-1).getNumber();
         return duelList;
     }
 
-    /*
-    void createDuelMessage(Cards playedCards){
-        System.out.println("Beginning of duel message");
-        int index=0;
-        for (Player p: duelPlayers){
-            String duelString = p.toString()+" played: ";
-            p.setDuelMessage(duelString);
-        }
-        System.out.println("End of duel message");
-    }
-
-     */
-
-    public void addToDuelMessage(List<Player> duelPlayers, String concat) {
+    void runOneRoundOfDuel(){
+        checkIfPlayerStillHasCards();
+        duelCards = Clash.createListOfPlayedCards(duelPlayers);
+        addHiddenCardMessage(duelPlayers, "?");
+        moveCardsFromPlayedCardsToPlayerDuelCards(duelPlayers,duelCards);
+        checkIfPlayerStillHasCards();
+        duelCards = Clash.createListOfPlayedCards(duelPlayers);
         int index = 0;
         for (Player p: duelPlayers){
-            String duelString = p.getDuelMessage();
-            duelString = duelString + concat;
-            p.setDuelMessage(duelString);
+            addToDuelMessage(p,String.valueOf(duelCards.getCards().get(index).cardValue));
             index++;
-            System.out.println(p.getDuelMessage());
+            //System.out.println("duel message: "+p.getDuelMessage());
         }
     }
 
-    void moveCardsFromPlayedCardsToPlayerDuelCards(List<Player> duelPlayers, Cards playedCards){
+    void checkIfPlayerStillHasCards(){
+        for (Iterator<Player> iterator = duelPlayers.iterator(); iterator.hasNext();){
+            Player player = iterator.next();
+            if (player.getPlayersCards().getCards().size()<1){
+                player.setDuelMessage(player.getDuelMessage()+" EoC");  //todo method to add to get message (Player,String)
+                iterator.remove();
+            }
+        }
+    }
+
+    void addToDuelMessage(Player player,String concat){ player.setDuelMessage(player.getDuelMessage()+" "+concat); }
+
+    void addHiddenCardMessage(List<Player> duelPlayers, String concat) {
         for (Player p: duelPlayers){
-            System.out.println("Card removed: "+ playedCards.getCards().get(0).cardValue);
-            String message = p.getDuelMessage()+" "+playedCards.getCards().get(0).cardValue;
-            p.setDuelMessage(message);
-            System.out.println(p.getDuelMessage());
-            p.getDuelCards().getCards().add( playedCards.getCards().remove(0));  //since removing, always first card
+            addToDuelMessage(p,concat);
+        }
+    }
+
+    void moveCardsFromPlayedCardsToPlayerDuelCards(List<Player> duelPlayers, Cards duelCards){
+        for (Player p: duelPlayers){
+            p.getDuelCards().getCards().add( duelCards.getCards().remove(0));  //since removing, always first card
+        }
+    }
+
+    public void prepareCardsForTheWinner(List<Player> activePlayers, Cards cardsForWinner, byte winner) {
+        for (Player p: activePlayers){
+            cardsForWinner.getCards().addAll(p.getDuelCards().getCards());
+            if (p.getNumber()==winner){
+                addToDuelMessage(p," -----------> WINNER FOUND!");
+            }
+        }
+    }
+
+    public void deleteDuelMessagesAndCards(List<Player> activePlayers) {
+        for (Player p: activePlayers){
+            p.getDuelCards().getCards().clear();
+            p.setDuelMessage(null);
         }
     }
 }

@@ -3,12 +3,14 @@ package com.epam.prejap.oop.screen;
 import com.epam.prejap.oop.war.Player;
 import java.util.List;
 
-import java.util.Random;
-
 public class DuelScreen implements Screen {
     String message;
+    short gameRound;
+    short duelRound;
 
-    public DuelScreen(List<Player> players){
+    public DuelScreen(List<Player> players, short gameRound, short duelRound){
+        this.gameRound = gameRound;
+        this.duelRound = duelRound;
         getMessage(players);
         showMessage();
     }
@@ -18,19 +20,18 @@ public class DuelScreen implements Screen {
     }
 
     public void getMessage(List<Player> players){
-        message = String.format("""
-        Duel between players will be decided by a coin toss.
-        Tossing... player%d has won!
-    """,players.get(coinToss()).getNumber());
+        message = String.format("WAR, 3 players, SMALL deck, turn #%d - DRAW with x/x cards\n",gameRound+1);
+        message = message +"""
+        ================================================================
+                       WE HAVE A WAR LADIES AND GENTLEMEN!
+        ================================================================
+                """;
+        for (Player p: players){
+            message = message +"\n"+p.getDuelMessage();
+        }
+        message = message + String.format("\n\nWar lasted %d rounds",duelRound);
         message = message + separator;
     }
-
-    byte coinToss(){
-        Random rand = new Random();
-        int randomNr = rand.nextBoolean() ? 1 : 0;
-        return (byte) randomNr;
-    }
-
 }
 
 /*

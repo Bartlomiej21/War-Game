@@ -1,7 +1,7 @@
 package com.epam.prejap.oop.war;
 
+import com.epam.prejap.oop.screen.DuelScreen;
 import com.epam.prejap.oop.screen.GameScreen;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,17 +14,20 @@ public class Clash {
     List<Player> activePlayers;
     Cards playedCards;
     byte winner;
-    short totalNrOfCards;   //todo could be unnecessary
+    short totalNrOfCards;
+    short gameRound;
+    short duelRound = 1;
     Duel duel;
 
-    Clash(Players playersInGame, short totalNrOfCards){
+    Clash(Players playersInGame, short totalNrOfCards, short round){
         this.activePlayers = playersInGame.getPlayers().stream().collect(Collectors.toList());
         this.totalNrOfCards = totalNrOfCards;
+        this.gameRound = round;
     }
 
-    Cards createListOfPlayedCards(List<Player> activePlayers){
+    static Cards createListOfPlayedCards(List<Player> players){
         Cards playedCards = new Cards();
-        for (Player p: activePlayers ){
+        for (Player p: players ){
             int removedCard = p.getPlayersCards().getCards().remove(0).getCardValue();
             playedCards.getCards().add(new Card(removedCard));
         }
@@ -35,56 +38,28 @@ public class Clash {
         new GameScreen(activePlayers, totalNrOfCards, playedCards);
     }
 
-    byte resolveClash(Players allPlayers, List<Player> activePlayers, Cards cardsForWinner){
-
+    byte resolveClash(List<Player> activePlayers, Cards cardsForWinner){
         winner = selectWinner(activePlayers, playedCards, cardsForWinner);
         if (duel==null) {
             cardsForWinner.getCards().addAll(playedCards.getCards());
-            playedCards.getCards().clear();
             return winner;
         }
-        //todo below should be moved to duel class
         while (winner==-1) {
-            duel.duelPlayers.removeIf(i -> i.getPlayersCards().getCards().size()<1);  //todo this should get Eoc event
-            this.playedCards = createListOfPlayedCards(duel.duelPlayers);  //this removes from playerCards and adds to playedCards
-            duel.addToDuelMessage(duel.duelPlayers, " ?");
-            duel.moveCardsFromPlayedCardsToPlayerDuelCards(duel.duelPlayers,playedCards);  //hidden card to playerDuelCards
-            duel.duelPlayers.removeIf(i -> i.getPlayersCards().getCards().size()<1);  //also a EoC events
+            duelRound++;
+            duel.runOneRoundOfDuel();
+            playedCards = duel.duelCards;
             if (duel.duelPlayers.size()>1){
-                this.playedCards = createListOfPlayedCards(duel.duelPlayers);
                 winner = selectWinner(duel.duelPlayers, playedCards, cardsForWinner);
             } else if (duel.duelPlayers.size()==1){
-                duel.duelPlayers.get(0).setDuelMessage("Winner");
                 winner = duel.duelPlayers.get(0).getNumber();
             } else {
-                // winner is the last player
                 winner = duel.defaultWinner;
             }
         }
-        // todo in case of duel, below gives cards to a winner. Should be in a different place
-        /*
-        for (Player p: duel.duelPlayers){
-            System.out.println(p.getDuelMessage());
-            cardsForWinner.getCards().addAll(p.getDuelCards().getCards());
-            p.getDuelCards().getCards().clear();
-        }
-
-         */
-        cardsForWinner.getCards().clear();
-        for (int i=0; i<=playedCards.getCards().size()-1;i++){
-            duel.duelPlayers.get(i).getDuelCards().getCards().add(playedCards.getCards().get(i));
-        }
-
-        for (Player p: activePlayers){
-            cardsForWinner.getCards().addAll(p.getDuelCards().getCards());
-        }
-
-
-        for (Player p: activePlayers){
-            p.getDuelCards().getCards().clear();
-            p.setDuelMessage(null);
-        }
-        //cardsForWinner.getCards().addAll(playedCards.getCards());
+        duel.moveCardsFromPlayedCardsToPlayerDuelCards(duel.duelPlayers,playedCards);
+        duel.prepareCardsForTheWinner(activePlayers,cardsForWinner,winner);
+        new DuelScreen(activePlayers, gameRound, duelRound);
+        duel.deleteDuelMessagesAndCards(activePlayers);
         return winner;
     }
 
@@ -114,14 +89,11 @@ public class Clash {
                 default:
                     this.duel = new Duel();
                     duel.duelPlayers = duel.createDuelPlayersList(activePlayers,playedCards,max);
-                    //duel.createDuelMessage(playedCards);
-                    System.out.println("dueeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeel");
                     return -1;
             }
         }
 
     void addCardsToWinner(Players players, Cards listOfCards,byte winner){
-        // todo check if there is no draw. Actually I might not need to do that - below will not work for winner=0
         for(Player p: players) {
             if (p.getNumber()==winner) {
                 for (Card c : listOfCards) {
@@ -130,8 +102,4 @@ public class Clash {
             }
         }
     }
-
-    public void setWinner(byte number) {
-        this.winner = number;
-    }   //todo check if obsolete now
 }
