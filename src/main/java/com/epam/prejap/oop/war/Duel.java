@@ -69,7 +69,7 @@ public class Duel {
 
     void moveCardsFromPlayedCardsToPlayerDuelCards(List<Player> duelPlayers, Cards duelCards){
         for (Player p: duelPlayers){
-            p.getDuelCards().getCards().add( duelCards.getCards().remove(0));  
+            p.getDuelCards().getCards().add( duelCards.getCards().remove(0));
         }
     }
 

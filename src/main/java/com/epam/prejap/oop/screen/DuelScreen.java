@@ -1,5 +1,6 @@
 package com.epam.prejap.oop.screen;
 
+import com.epam.prejap.oop.war.GameInfo;
 import com.epam.prejap.oop.war.Player;
 import java.util.List;
 
@@ -7,10 +8,14 @@ public class DuelScreen implements Screen {
     String message;
     short gameRound;
     short duelRound;
+    byte nrOfPlayers;
+    short totalCards;
 
-    public DuelScreen(List<Player> players, short gameRound, short duelRound){
+    public DuelScreen(List<Player> players, byte nrOfPlayers, short gameRound, short duelRound, short totalCards){
         this.gameRound = gameRound;
         this.duelRound = duelRound;
+        this.nrOfPlayers = nrOfPlayers;
+        this.totalCards = totalCards;
         getMessage(players);
         showMessage();
     }
@@ -20,14 +25,16 @@ public class DuelScreen implements Screen {
     }
 
     public void getMessage(List<Player> players){
-        message = String.format("WAR, 3 players, SMALL deck, turn #%d - DRAW with x/x cards\n",gameRound+1);
-        message = message +"""
+        message = String.format("""
+        WAR, %d players, %s deck, turn #%d - DRAW with %d/%d cards
         ================================================================
                        WE HAVE A WAR LADIES AND GENTLEMEN!
         ================================================================
-                """;
+                """,nrOfPlayers, GameInfo.INSTANCE.getDeck(),gameRound+1,totalCards,totalCards);
         for (Player p: players){
-            message = message +"\n"+p.getDuelMessage();
+            if (p.getDuelMessage()!=null){
+                message = message +"\n"+p.getDuelMessage();
+            }
         }
         message = message + String.format("\n\nWar lasted %d rounds",duelRound);
         message = message + separator;

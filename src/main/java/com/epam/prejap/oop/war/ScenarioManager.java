@@ -22,7 +22,7 @@ public class ScenarioManager {
     void prepareScenariosForTheGame(){
         this.scenarioPaths = createListOfScenarios();
         this.scenarioList = prepareScenarioName(scenarioPaths);
-        if (scenarioPaths.size()>0 ){    //scenarioPaths.size()>0     scenarioPaths.size()==2
+        if (scenarioPaths.size()==2 ){    //scenarioPaths.size()>0     scenarioPaths.size()==2  //for testing
             new ScenarioScreen(scenarioPaths);
             for (String path: scenarioPaths){
                 int index = scenarioPaths.indexOf(path);
@@ -31,7 +31,7 @@ public class ScenarioManager {
             }
         } else {
             System.out.println("Scenario: Default Scenario\n\n");
-            new JSONParser(true).prepareGame("src/main/resources/war.json");  //default scenario
+            new JSONParser(true).prepareGame("src/main/resources/warTest.json");  //default scenario todo turn shuffle to true after tests
         }
     }
 

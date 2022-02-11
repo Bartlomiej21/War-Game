@@ -1,22 +1,20 @@
 package com.epam.prejap.oop.screen;
 
-import com.epam.prejap.oop.war.Players;
+import com.epam.prejap.oop.war.GameInfo;
 
 public class EndScreen implements Screen {
 
     String message;
+    String deck = GameInfo.INSTANCE.getDeck();
 
-    public EndScreen(byte winner, short size, short totalNrOfCards){
-        //message = separator+ String.format("WAR, %d players, ? deck, player %d WON with %d/%d cards",Players.numberOfPlayers,winner,size,totalNrOfCards);
-        message = separator+ String.format("WAR, %d players, ? deck, player %d WON with %d/%d cards",3,winner,size,totalNrOfCards);
+    public EndScreen(byte nrOfPlayers, byte winner, short size, short totalNrOfCards){
+        message = separator+ String.format("WAR, %d players, %s deck, player%d WON with %d/%d cards",nrOfPlayers, deck,winner,size,totalNrOfCards);
         showMessage();
     }
 
     public EndScreen(short rounds, byte winner){
-
         message = separator+chooseMessage(winner,rounds);
         showMessage();
-        //System.exit(0);
     }
 
     public void showMessage(){
@@ -35,20 +33,7 @@ public class EndScreen implements Screen {
                 message = String.format("Stopping the game due to %d battles without resolution.\n" +
                         "Winner is the owner of the highest card AND the owner of the greatest amount of " +
                         "cards: player%d.",rounds,winner);
-
-
         }
         return message;
     }
-
-
 }
-
-
-/*
-SEPARATOR
-WAR, 2 players, ? deck, player1 WON with 2/2 cards
-SEPARATOR
-
-
- */

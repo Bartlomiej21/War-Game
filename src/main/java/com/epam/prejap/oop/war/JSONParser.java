@@ -23,6 +23,7 @@ public class JSONParser {
     short totalNrOfCards;
     boolean shuffleDeck;
 
+
     JSONParser(boolean shuffleDeck){
         this.shuffleDeck = shuffleDeck;
     }
@@ -32,9 +33,10 @@ public class JSONParser {
         if (checkJSONArray(json)) {
             JSONArray ja = new JSONArray(json);
             Players players = createPlayers(ja);
+            GameInfo.INSTANCE.setDeck(checkDeckSize());
             //if (cards.checkIfNotEmpty(cards.cards)) {  //todo
             if (true){
-                RunGame runGame = new RunGame(players,totalNrOfCards); //todo
+                RunGame runGame = new RunGame(players,totalNrOfCards);
                 runGame.playGame();
             }
         }
@@ -84,6 +86,11 @@ public class JSONParser {
                 return playersList;
         }
         return null;
+    }
+
+    String checkDeckSize(){
+        if (totalNrOfCards<=24) return "SMALL";
+        return "BIG";
     }
 
     String loadGameFile(String filePath) {

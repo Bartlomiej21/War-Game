@@ -15,13 +15,15 @@ public class Clash {
     Cards playedCards;
     byte winner;
     short totalNrOfCards;
+    byte nrOfPlayers;
     short gameRound;
     short duelRound = 1;
     Duel duel;
 
-    Clash(Players playersInGame, short totalNrOfCards, short round){
+    Clash(Players playersInGame, short totalNrOfCards, short round, byte nrOfPlayers){
         this.activePlayers = playersInGame.getPlayers().stream().collect(Collectors.toList());
         this.totalNrOfCards = totalNrOfCards;
+        this.nrOfPlayers = nrOfPlayers;
         this.gameRound = round;
     }
 
@@ -35,7 +37,7 @@ public class Clash {
     }
 
     void printGameScreen(List<Player> activePlayers,short totalNrOfCards, Cards playedCards){
-        new GameScreen(activePlayers, totalNrOfCards, playedCards);
+        new GameScreen(activePlayers, nrOfPlayers, totalNrOfCards, playedCards);
     }
 
     byte resolveClash(List<Player> activePlayers, Cards cardsForWinner){
@@ -58,28 +60,28 @@ public class Clash {
         }
         duel.moveCardsFromPlayedCardsToPlayerDuelCards(duel.duelPlayers,playedCards);
         duel.prepareCardsForTheWinner(activePlayers,cardsForWinner,winner);
-        new DuelScreen(activePlayers, gameRound, duelRound);
+        new DuelScreen(activePlayers, nrOfPlayers, gameRound, duelRound, totalNrOfCards);
         duel.deleteDuelMessagesAndCards(activePlayers);
         return winner;
     }
 
-        byte selectWinner(List<Player> activePlayers, Cards playedCards, Cards cardsForWinner) {  //todo cards for winner obsolete for now
-            int max = 0;
-            short occurrences = 1;
-            int index = 0;
-            int indexOfWinner = 0;
-            Iterator<Card> itr = playedCards.iterator();
-            while (itr.hasNext()) {
-                int maxTemp = itr.next().getCardValue();
-                if (maxTemp > max) {
-                    max = maxTemp;
-                    occurrences = 1;
-                    indexOfWinner = index;
-                } else if (maxTemp == max) {
-                    occurrences++;
-                }
-                index++;
+    byte selectWinner(List<Player> activePlayers, Cards playedCards, Cards cardsForWinner) {  //todo cards for winner obsolete for now
+        int max = 0;
+        short occurrences = 1;
+        int index = 0;
+        int indexOfWinner = 0;
+        Iterator<Card> itr = playedCards.iterator();
+        while (itr.hasNext()) {
+            int maxTemp = itr.next().getCardValue();
+            if (maxTemp > max) {
+                max = maxTemp;
+                occurrences = 1;
+                indexOfWinner = index;
+            } else if (maxTemp == max) {
+                occurrences++;
             }
+            index++;
+        }
 
             switch (occurrences) {
                 case 1:

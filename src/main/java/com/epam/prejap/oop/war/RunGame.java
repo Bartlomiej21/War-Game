@@ -25,12 +25,12 @@ public class RunGame  {
         //short gameLimit = 10;  // for short tests
         while (playersInGame.getPlayers().size()>1 && round<gameLimit){
             showCards();    //SHOWS player cards
-            Clash clash = new Clash(playersInGame,totalNrOfCards,round);  //todo add stuff
+            Clash clash = new Clash(playersInGame,totalNrOfCards,round,nrOfPlayers);
             clash.playedCards= Clash.createListOfPlayedCards(clash.activePlayers);
             clash.printGameScreen(clash.activePlayers, totalNrOfCards,clash.playedCards);
             clash.resolveClash(clash.activePlayers, cardsForWinner);
 
-            clash.addCardsToWinner(playersInGame, cardsForWinner, clash.winner);  //todo there is always a winner, even a default one
+            clash.addCardsToWinner(playersInGame, cardsForWinner, clash.winner);
             playersInGame.getPlayers().removeIf(i -> i.getPlayersCards().getCards().size()<1);
             cardsForWinner.getCards().clear();
             round++;
@@ -44,9 +44,8 @@ public class RunGame  {
         } else {
             byte winner = playersInGame.getPlayers().get(0).getNumber();
             short size = (short) playersInGame.getPlayers().get(0).getPlayersCards().getCards().size();
-            //short size = 18;
             new Printer(winner, round);
-            new EndScreen(winner, size, totalNrOfCards);
+            new EndScreen(nrOfPlayers,winner, size, totalNrOfCards);
         }
     }
 
