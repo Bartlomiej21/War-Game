@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Suite">
+    <test verbose="2" preserve-order="true" name="C:/Users/slomi/GitEx/War/war-Bartlomiej21">
+        <classes>
+            <class name="com.epam.prejap.oop.war.JSONParserTest">
+                <methods>
+                    <include name="testIfJSONStringParsedFromFileIsCorrect"/>
+                    <include name="IsJSONArrayAbleToCreateObjectFromGivenString"/>
+                </methods>
+            </class>
+            <class name="com.epam.prejap.oop.war.LongGameResolutionTest">
+                <methods>
+                    <include name="testFindWinner"/>
+                </methods></class>
+            <class name="com.epam.prejap.oop.war.MainTest">
+                <methods><include name="testMain"/>
+                </methods>
+            </class>
+            <class name="com.epam.prejap.oop.war.RunGameTest">
+                <methods>
+                    <include name="testGameLimitValue"/>
+                    <include name="testCardQuantityChecker"/>
+                    <include name="testAddCardsToWinner"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
