@@ -3,13 +3,12 @@ package com.epam.prejap.oop.war;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.*; //todo change
-
+import java.util.Iterator;
+import java.util.Spliterator;
 
 public class Cards implements Iterable<Card> {
 
     private List<Card> cards;
-
     Cards(List<Card> cards) {
         this.cards = cards;
     }

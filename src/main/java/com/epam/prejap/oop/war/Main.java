@@ -1,14 +1,16 @@
 package com.epam.prejap.oop.war;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.epam.prejap.oop.screen.DuelScreen;
+/**
+ * @author Bartlomiej Slominski
+ *
+ * This is a main class running a game.
+ * Use new JSONParser(false).prepareGame("src/main/resources/warTest.json");
+ * to start a game with example scenario, or you can substitute it for any valid JSON file.
+ * Switch boolean to true to shuffle cards.
+ */
 
 public class Main {
-
     public static void main(String[] args) {
-        //new JSONParser().prepareGame();   //use this to start game with 1 one chosen scenario
-        new ScenarioManager().prepareScenariosForTheGame();  //use this to start game with multiple scenarios chosen from a directory
+        new ScenarioManager().prepareScenariosForTheGame();
     }
 }

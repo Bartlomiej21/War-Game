@@ -22,14 +22,12 @@ public class RunGame  {
         Cards cardsForWinner = new Cards();
         short round = 0;
         short gameLimit = (short) (totalNrOfCards*10);
-        //short gameLimit = 10;  // for short tests
         while (playersInGame.getPlayers().size()>1 && round<gameLimit){
-            showCards();    //SHOWS player cards
+            showCards();
             Clash clash = new Clash(playersInGame,totalNrOfCards,round,nrOfPlayers);
             clash.playedCards= Clash.createListOfPlayedCards(clash.activePlayers);
             clash.printGameScreen(clash.activePlayers, totalNrOfCards,clash.playedCards);
             clash.resolveClash(clash.activePlayers, cardsForWinner);
-
             clash.addCardsToWinner(playersInGame, cardsForWinner, clash.winner);
             playersInGame.getPlayers().removeIf(i -> i.getPlayersCards().getCards().size()<1);
             cardsForWinner.getCards().clear();
@@ -53,7 +51,7 @@ public class RunGame  {
         for (Player p: playersInGame) {
             System.out.println("Cards remaining in player"+(p.getNumber())+" hands: ");
             for (Card c: p.getPlayersCards().getCards()) {
-                System.out.print(c.cardValue+" ");
+                System.out.print(c.getCardValue()+" ");
             }
             System.out.println("");
         }

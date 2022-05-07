@@ -14,8 +14,9 @@ import java.util.stream.Collectors;
 import java.util.Collections;
 
 /**
- * This class parsesJSON and uses data from it to create Players and Cards necessary for the game.
- * If no scenario is given, program will use default war.json file to run the game, but every time cards will be shuffled.
+ * This class parses JSON and uses data from it to create Players and Cards necessary for the game.
+ * If no scenario is given, program will use default war.json file to run the game, but every time cards
+ * will be shuffled.
  */
 public class JSONParser {
 
@@ -23,26 +24,22 @@ public class JSONParser {
     short totalNrOfCards;
     boolean shuffleDeck;
 
-
     JSONParser(boolean shuffleDeck){
         this.shuffleDeck = shuffleDeck;
     }
 
-    void prepareGame(String jsonFilePath) {
-        this.json = loadGameFile(jsonFilePath);
+    void prepareGame(String filePath) {
+        this.json = loadGameFile(filePath);
         if (checkJSONArray(json)) {
             JSONArray ja = new JSONArray(json);
             Players players = createPlayers(ja);
             GameInfo.INSTANCE.setDeck(checkDeckSize());
-            //if (cards.checkIfNotEmpty(cards.cards)) {  //todo
-            if (true){
-                RunGame runGame = new RunGame(players,totalNrOfCards);
-                runGame.playGame();
-            }
+            RunGame runGame = new RunGame(players,totalNrOfCards);
+            runGame.playGame();
         }
     }
 
-    private Players createPlayers(JSONArray ja) {
+    Players createPlayers(JSONArray ja) {
         Players playersList = new Players();
         Matcher matcher;
         Cards playerCards;
@@ -95,6 +92,7 @@ public class JSONParser {
 
     String loadGameFile(String filePath) {
         ArrayList<String> result = new ArrayList<>();
+        System.out.println(filePath);
         String jsonFromFile;
         try {
             BufferedReader br = new BufferedReader(new FileReader(filePath));

@@ -18,9 +18,9 @@ public class Duel {
         List<Player> duelList = new ArrayList();
         for (int i = 0; i <= activePlayers.size() - 1; i++) {
             Player player = activePlayers.get(i);
-            int cardValue = playedCards.getCards().get(i).cardValue;
+            int cardValue = playedCards.getCards().get(i).getCardValue();
             player.getDuelCards().getCards().add(new Card(cardValue));
-            if (playedCards.getCards().get(i).cardValue == max) {
+            if (playedCards.getCards().get(i).getCardValue() == max) {
                 duelList.add(activePlayers.get(i));
                 if(player.getDuelMessage() == null){
                     player.setDuelMessage("Player"+player.getNumber()+" played: "+cardValue);
@@ -61,7 +61,7 @@ public class Duel {
                     addToDuelMessage(p,concat);
                     break;
                 default:
-                    addToDuelMessage(p,String.valueOf(duelCards.getCards().get(index).cardValue));
+                    addToDuelMessage(p,String.valueOf(duelCards.getCards().get(index).getCardValue()));
                     index++;
             }
         }

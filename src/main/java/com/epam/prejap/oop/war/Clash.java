@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * This class deals with comparing user cards, a.k.a. clashing. It's supposed to select a winner who will get cards for a given round.
+ * This class deals with comparing user cards, a.k.a. clashing. It's supposed to select a winner
+ * who will get cards for a given round.
  */
 public class Clash {
 
@@ -65,7 +66,7 @@ public class Clash {
         return winner;
     }
 
-    byte selectWinner(List<Player> activePlayers, Cards playedCards, Cards cardsForWinner) {  //todo cards for winner obsolete for now
+    byte selectWinner(List<Player> activePlayers, Cards playedCards, Cards cardsForWinner) {
         int max = 0;
         short occurrences = 1;
         int index = 0;
@@ -82,7 +83,6 @@ public class Clash {
             }
             index++;
         }
-
             switch (occurrences) {
                 case 1:
                     byte winner = activePlayers.get(indexOfWinner).getNumber();

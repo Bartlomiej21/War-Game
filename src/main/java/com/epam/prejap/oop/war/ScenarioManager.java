@@ -12,17 +12,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class loads possible scenarios from this directory: "src/main/resources/". Valid scenarios must begin with war_ prefix and have .json extension.
- * List of scenarios is sorted in alphabetical order. If there are no scenario files detected, default scenario will trigger.
+ * This class loads possible scenarios from this directory: "src/main/resources/". Valid scenarios must begin
+ * with war_ prefix and have .json extension.
+ * List of scenarios is sorted in alphabetical order. If there are no scenario files detected, default scenario
+ * will trigger.
  */
 public class ScenarioManager {
+
     List<String> scenarioPaths;
     List<String> scenarioList;
 
     void prepareScenariosForTheGame(){
         this.scenarioPaths = createListOfScenarios();
         this.scenarioList = prepareScenarioName(scenarioPaths);
-        if (scenarioPaths.size()==2 ){    //scenarioPaths.size()>0     scenarioPaths.size()==2  //for testing
+        if (scenarioPaths.size()>0  ){
             new ScenarioScreen(scenarioPaths);
             for (String path: scenarioPaths){
                 int index = scenarioPaths.indexOf(path);
@@ -31,7 +34,7 @@ public class ScenarioManager {
             }
         } else {
             System.out.println("Scenario: Default Scenario\n\n");
-            new JSONParser(true).prepareGame("src/main/resources/warTest.json");  //default scenario todo turn shuffle to true after tests
+            new JSONParser(true).prepareGame("/src/main/resources/war.json");
         }
     }
 
@@ -49,7 +52,7 @@ public class ScenarioManager {
         }
         ds.forEach(i -> list.add(i.toString()));
         filterResourcesForValidScenarios(list);
-        java.util.Collections.sort(list); //sorting list in alphabetical order.
+        java.util.Collections.sort(list);
         return list;
     }
 

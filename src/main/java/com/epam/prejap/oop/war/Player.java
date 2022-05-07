@@ -11,7 +11,6 @@ public class Player {
     private Cards duelCards = new Cards();
     private String duelMessage;
 
-
     public Player(byte playerNumber, Cards playersCards){
         this.number = playerNumber;
         this.name = "Player"+playerNumber;
@@ -35,7 +34,6 @@ public class Player {
     public String getDuelMessage(){
         return this.duelMessage;
     }
-
 
     public Cards getDuelCards() {
         return duelCards;

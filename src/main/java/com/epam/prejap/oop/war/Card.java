@@ -5,7 +5,7 @@ package com.epam.prejap.oop.war;
  */
 public class Card {
 
-    int cardValue;
+    private int cardValue;
     boolean correctValue;
     final byte LOWER_RANGE = 1;
     final byte UPPER_RANGE = 14;
@@ -20,7 +20,4 @@ public class Card {
     public int getCardValue(){
         return cardValue;
     }
-
-    public void setCardValue(int i){cardValue=i;}  //for tests
-
 }
